@@ -1,5 +1,4 @@
-import 'package:compostavel_app/compostavel.dart';
-import 'package:compostavel_app/pages/home_page.dart';
+import 'package:compostavel_app/pages/home_donor_page.dart';
 import 'package:compostavel_app/pages/login_page.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
