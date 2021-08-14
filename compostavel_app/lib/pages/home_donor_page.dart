@@ -30,32 +30,37 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: OutlinedButton(
-              onPressed: () => context.read<AuthService>().logout(),
-              style: OutlinedButton.styleFrom(primary: Colors.red),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.logout),
-                  Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      "Sair",
-                      style: TextStyle(fontSize: 20),
+      body: Container(
+        width: size.width,
+        height: size.height,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child: OutlinedButton(
+                onPressed: () => context.read<AuthService>().logout(),
+                style: OutlinedButton.styleFrom(primary: Colors.red),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.logout),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "Sair",
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

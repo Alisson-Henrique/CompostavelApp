@@ -1,4 +1,5 @@
 import 'package:compostavel_app/compostavel.dart';
+import 'package:compostavel_app/repositories/user_data_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,10 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => AuthService()),
+      ChangeNotifierProvider(
+        create: (context) =>
+            UserDataRepository(auth: context.read<AuthService>()),
+      ),
     ],
     child: Compostavel(),
   ));

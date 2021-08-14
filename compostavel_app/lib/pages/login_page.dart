@@ -1,3 +1,4 @@
+import 'package:compostavel_app/pages/register_page.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -151,7 +152,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               TextButton(
-                onPressed: () => setFormAction(!isLogin),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return RegisterPage();
+                    }),
+                  );
+                },
                 child: Text(
                   toggleButton,
                   style: TextStyle(fontSize: 20),
