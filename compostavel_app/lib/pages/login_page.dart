@@ -1,3 +1,4 @@
+import 'package:compostavel_app/models/user_data.dart';
 import 'package:compostavel_app/pages/register_page.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -25,22 +26,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    setFormAction(true);
+    setFormAction();
   }
 
-  setFormAction(bool action) {
+  setFormAction() {
     setState(() {
-      isLogin = action;
-
-      if (isLogin) {
-        title = "Bem vindo!";
-        actionButton = "Login";
-        toggleButton = "Novo Cadastro";
-      } else {
-        title = "Crie sua conta";
-        actionButton = "Cadastrar";
-        toggleButton = "Volte ao login";
-      }
+      title = "Bem vindo!";
+      actionButton = "Login";
+      toggleButton = "Novo Cadastro";
     });
   }
 
@@ -52,20 +45,6 @@ class _LoginPageState extends State<LoginPage> {
       setState(() => isLoading = false);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));
-    }
-  }
-
-  register() async {
-    setState(() => isLoading = true);
-    try {
-      await context.read<AuthService>().register(email.text, password.text);
-    } on AuthException catch (e) {
-      setState(() => isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.message),
-        ),
-      );
     }
   }
 
@@ -117,10 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      if (isLogin) {
-                        login();
-                      } else
-                        register();
+                      login();
                     }
                   },
                   child: Row(
@@ -155,7 +131,9 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
-                      return RegisterPage();
+                      return RegisterPage(
+                        typeUsert: Type_User.PRODUCER,
+                      );
                     }),
                   );
                 },

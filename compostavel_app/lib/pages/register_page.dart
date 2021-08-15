@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:compostavel_app/models/user_data.dart';
 import 'package:compostavel_app/pages/login_page.dart';
+import 'package:compostavel_app/repositories/user_data_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key? key}) : super(key: key);
+  RegisterPage({Key? key, Type_User? typeUsert}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -13,11 +16,15 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
+  final name = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
+  final confirmPassword = TextEditingController();
 
+  late UserDataRepository userDataRepository;
+  bool isPop = true;
   bool isLoading = false;
-
+  late UserData userData;
   @override
   void initState() {
     super.initState();
@@ -25,10 +32,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
   register() async {
     setState(() => isLoading = true);
+    setState(() => isPop = true);
     try {
-      await context.read<AuthService>().register(email.text, password.text);
+      await context
+          .read<AuthService>()
+          .register(email.text, password.text, confirmPassword.text, userData);
     } on AuthException catch (e) {
       setState(() => isLoading = false);
+      setState(() => isPop = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.message),
@@ -39,6 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    userDataRepository = context.watch<UserDataRepository>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -55,7 +67,23 @@ class _RegisterPageState extends State<RegisterPage> {
                     letterSpacing: -1.5),
               ),
               Padding(
-                padding: EdgeInsets.all(30),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                child: TextFormField(
+                    controller: name,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Nome",
+                    ),
+                    keyboardType: TextInputType.name,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Nome Invalido";
+                      }
+                      return null;
+                    }),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                 child: TextFormField(
                     controller: email,
                     decoration: InputDecoration(
@@ -71,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 6),
                 child: TextFormField(
                   controller: password,
                   decoration: InputDecoration(
@@ -82,12 +110,25 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                child: TextFormField(
+                  controller: confirmPassword,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Confirmar Senha",
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                 child: ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      register();
+                      userData = new UserData(name: name.text);
 
-                      Navigator.pop(context);
+                      register();
+                      if (isPop) {
+                        Navigator.pop(context);
+                      }
                     }
                   },
                   child: Row(

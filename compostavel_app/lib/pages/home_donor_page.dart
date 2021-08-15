@@ -1,3 +1,5 @@
+import 'package:compostavel_app/models/user_data.dart';
+import 'package:compostavel_app/repositories/user_data_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,28 +14,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: MyHomePage(
-            title: 'Olá ' + context.read<AuthService>().user!.email));
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Olá, " + context.read<AuthService>().user!.email),
       ),
       body: Container(
         width: size.width,

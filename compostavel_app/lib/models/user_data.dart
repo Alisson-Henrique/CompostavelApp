@@ -1,3 +1,5 @@
+enum Type_User { PRODUCER, DONOR }
+
 class UserData {
   String name;
 
