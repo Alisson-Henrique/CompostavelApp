@@ -1,4 +1,4 @@
-import 'package:compostavel_app/pages/home_donor_page.dart';
+import 'package:compostavel_app/pages/home_page.dart';
 import 'package:compostavel_app/pages/home_producer_page.dart';
 import 'package:flutter/material.dart';
 

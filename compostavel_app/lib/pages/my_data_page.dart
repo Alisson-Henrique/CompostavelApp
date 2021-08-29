@@ -2,20 +2,20 @@ import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeDonorPage extends StatefulWidget {
-  HomeDonorPage({Key? key}) : super(key: key);
+class MyDataPage extends StatefulWidget {
+  MyDataPage({Key? key}) : super(key: key);
 
   @override
-  _HomeDonorPageState createState() => _HomeDonorPageState();
+  _MyDataPageState createState() => _MyDataPageState();
 }
 
-class _HomeDonorPageState extends State {
+class _MyDataPageState extends State {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Doador"),
+        title: Text("Meus Dados"),
       ),
       body: Container(
         width: size.width,
@@ -23,58 +23,38 @@ class _HomeDonorPageState extends State {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(16),
               child: OutlinedButton(
-                onPressed: () => null,
+                onPressed: () => context.read<AuthService>().logout(),
+                style: OutlinedButton.styleFrom(primary: Colors.blue),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.location_on_outlined),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "Endereço(s)",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: OutlinedButton(
+                onPressed: () => context.read<AuthService>().logout(),
                 style: OutlinedButton.styleFrom(primary: Colors.red),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.favorite),
+                    Icon(Icons.logout),
                     Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        "Doações",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: OutlinedButton(
-                onPressed: () => null,
-                style: OutlinedButton.styleFrom(primary: Colors.lightGreen),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.book),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "Tutoriais",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: OutlinedButton(
-                onPressed: () => null,
-                style: OutlinedButton.styleFrom(primary: Colors.lightBlue),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.turned_in),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "Conquistas",
+                        "Sair",
                         style: TextStyle(fontSize: 20),
                       ),
                     ),

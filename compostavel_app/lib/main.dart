@@ -1,5 +1,6 @@
 import 'package:compostavel_app/compostavel.dart';
 import 'package:compostavel_app/models/user_data.dart';
+import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:compostavel_app/repositories/user_data_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,14 +19,19 @@ void main() async {
         create: (context) =>
             UserDataRepository(auth: context.read<AuthService>()),
       ),
+      ChangeNotifierProvider(
+        create: (context) =>
+            ComposterRepository(auth: context.read<AuthService>()),
+      ),
     ],
     child: Compostavel(),
   ));
 
-  // final docc = await FirebaseFirestore.instance.collection("userd").get();
+  /*
+   final docc = await FirebaseFirestore.instance.collection("users").doc("").get();
 
-  // final userData = docc.docs
-  //  .map((doc) => UserData(name: doc["nme"], typeUser: Type_User.PRODUCER))
-  // .toList();
-  //print(userData[1].name);
+   final userDatas = docc.docs
+    .map((doc) => UserData(name: doc["name"])).toList();
+  print(userDatas[1].name);
+  */
 }

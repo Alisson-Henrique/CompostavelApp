@@ -40,10 +40,11 @@ class AuthService extends ChangeNotifier {
             email: email, password: password);
         _getUser();
         await FirebaseFirestore.instance
-            .collection("users/${user!.uid}/dados")
-            .doc(user!.email)
+            .collection("Usuarios/${email}/Dados")
+            .doc("Conta")
             .set(
           {
+            'email': email,
             'name': userData.name,
           },
         );

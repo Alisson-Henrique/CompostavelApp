@@ -1,4 +1,8 @@
+import 'package:compostavel_app/pages/composters_page.dart';
+import 'package:compostavel_app/repositories/composter_repository.dart';
+import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeProducerPage extends StatefulWidget {
   HomeProducerPage({Key? key}) : super(key: key);
@@ -10,11 +14,85 @@ class HomeProducerPage extends StatefulWidget {
 class _HomeProducerPageState extends State {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Olá Produtor"),
+        title: Text("Produtor"),
       ),
-      body: Container(),
+      body: Container(
+        width: size.width,
+        height: size.height,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: OutlinedButton(
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return CompostersPage();
+                })),
+                style: OutlinedButton.styleFrom(primary: Colors.green),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.house),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "Composteiras",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: OutlinedButton(
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return CompostersPage();
+                })),
+                style: OutlinedButton.styleFrom(primary: Colors.red),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.pin_drop_sharp),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "Visitações",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: OutlinedButton(
+                onPressed: () => null,
+                style: OutlinedButton.styleFrom(primary: Colors.lightBlue),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.turned_in),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "Conquistas",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

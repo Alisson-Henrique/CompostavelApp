@@ -67,21 +67,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     letterSpacing: -1.5),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                child: TextFormField(
-                    controller: name,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Nome",
-                    ),
-                    keyboardType: TextInputType.name,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Nome Invalido";
-                      }
-                      return null;
-                    }),
-              ),
+                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                  child: TextFormField(
+                      controller: name,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Nome",
+                      ),
+                      keyboardType: TextInputType.name,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Nome vazio";
+                        }
+                        return null;
+                      })),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                 child: TextFormField(
@@ -126,6 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       userData = new UserData(name: name.text);
 
                       register();
+
                       if (isPop) {
                         Navigator.pop(context);
                       }
