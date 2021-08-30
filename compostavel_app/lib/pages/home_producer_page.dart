@@ -74,6 +74,46 @@ class _HomeProducerPageState extends State {
               padding: EdgeInsets.all(10),
               child: OutlinedButton(
                 onPressed: () => null,
+                style: OutlinedButton.styleFrom(primary: Colors.orange),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.delivery_dining),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "Insumos",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: OutlinedButton(
+                onPressed: () => null,
+                style: OutlinedButton.styleFrom(primary: Colors.brown),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.inventory),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "Composto",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: OutlinedButton(
+                onPressed: () => null,
                 style: OutlinedButton.styleFrom(primary: Colors.lightBlue),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

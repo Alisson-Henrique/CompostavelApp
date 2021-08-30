@@ -1,5 +1,6 @@
 import 'package:compostavel_app/compostavel.dart';
 import 'package:compostavel_app/models/user_data.dart';
+import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:compostavel_app/repositories/user_data_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
@@ -22,6 +23,10 @@ void main() async {
       ChangeNotifierProvider(
         create: (context) =>
             ComposterRepository(auth: context.read<AuthService>()),
+      ),
+      ChangeNotifierProvider(
+        create: (context) =>
+            AddressRepository(auth: context.read<AuthService>()),
       ),
     ],
     child: Compostavel(),

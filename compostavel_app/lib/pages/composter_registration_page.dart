@@ -1,10 +1,16 @@
+import 'package:compostavel_app/models/address.dart';
 import 'package:compostavel_app/models/composter.dart';
+import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ComposterRegistration extends StatefulWidget {
-  ComposterRegistration({Key? key}) : super(key: key);
+  List<String> addressesNames;
+  List<Address> addresses;
+  ComposterRegistration(
+      {Key? key, required this.addressesNames, required this.addresses})
+      : super(key: key);
 
   @override
   _ComposterRegistrationState createState() => _ComposterRegistrationState();
@@ -16,14 +22,20 @@ class _ComposterRegistrationState extends State<ComposterRegistration> {
   final startDate = TextEditingController();
   bool isLoading = false;
   late ComposterRepository composterRepository;
+  late AddressRepository addressRepository;
+  String? valueChoice;
 
   @override
   Widget build(BuildContext context) {
     save() {
-      composterRepository.save(Composter(
-        name: name.text,
-        startDate: startDate.text,
-      ));
+      Address? address = addressRepository.getAddressesByName(valueChoice);
+
+      composterRepository.save(
+          Composter(
+            name: name.text,
+            startDate: startDate.text,
+          ),
+          address);
 
       setState(() {
         name.text = "";
@@ -34,6 +46,9 @@ class _ComposterRegistrationState extends State<ComposterRegistration> {
     }
 
     composterRepository = context.watch<ComposterRepository>();
+    addressRepository = context.watch<AddressRepository>();
+    addressRepository.readAddress();
+    List listItem = addressRepository.getAddressesNames();
     return Scaffold(
       appBar: AppBar(
         title: Text("Cadastrar Composteira"),
@@ -75,6 +90,39 @@ class _ComposterRegistrationState extends State<ComposterRegistration> {
                       }
                       return null;
                     }),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                    child: Text(
+                      "Endereço",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: -1.5),
+                    ),
+                  )
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                child: DropdownButton(
+                  hint: Text("Selecione o Endereço"),
+                  value: valueChoice,
+                  isExpanded: true,
+                  onChanged: (newValue) {
+                    setState(() {
+                      valueChoice = newValue as String?;
+                    });
+                  },
+                  items: listItem.map((valueItem) {
+                    return DropdownMenuItem(
+                      value: valueItem,
+                      child: Text(valueItem),
+                    );
+                  }).toList(),
+                ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),

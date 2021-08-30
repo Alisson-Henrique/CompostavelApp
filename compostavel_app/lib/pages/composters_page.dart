@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:compostavel_app/models/address.dart';
 import 'package:compostavel_app/models/composter.dart';
 import 'package:compostavel_app/pages/composter_details.dart';
 import 'package:compostavel_app/pages/composter_registration_page.dart';
+import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -28,10 +30,13 @@ class _CompostersState extends State<CompostersPage> {
   Widget build(BuildContext context) {
     ComposterRepository composterRepository =
         Provider.of<ComposterRepository>(context);
-
+    AddressRepository addressRepository =
+        Provider.of<AddressRepository>(context);
     composterRepository.readComposters();
-
+    addressRepository.readAddress();
     List<Composter> composters = composterRepository.getComposters();
+    List<String> addressesNames = addressRepository.getAddressesNames();
+    List<Address> addresses = addressRepository.getAddresses();
     return Scaffold(
       appBar: AppBar(
         title: Text("Composteiras"),
@@ -66,7 +71,10 @@ class _CompostersState extends State<CompostersPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () =>
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return ComposterRegistration();
+          return ComposterRegistration(
+            addresses: addresses,
+            addressesNames: addressesNames,
+          );
         })),
         child: Icon(Icons.add),
       ),

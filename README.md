@@ -24,9 +24,6 @@
 
 <h1 align="center"></h1>
 
-## 👨‍🎨Authors
+## 👨‍🎨Author
 
 This project was developed by [Alisson Henrique](https://github.com/Alisson-Henrique) 😊, [Follow me](https://www.linkedin.com/in/alisson-henrique-38a855214/)❤️
-
-* [Gabriel Aragão](https://www.linkedin.com/in/gabriel-batista-05900960/)
-* [Francisco Gabriel](https://github.com/Sempus69)

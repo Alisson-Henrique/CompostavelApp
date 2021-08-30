@@ -1,3 +1,5 @@
+import 'package:compostavel_app/pages/address_list_page.dart';
+import 'package:compostavel_app/pages/address_registration_page.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +27,10 @@ class _MyDataPageState extends State {
             Padding(
               padding: EdgeInsets.all(16),
               child: OutlinedButton(
-                onPressed: () => context.read<AuthService>().logout(),
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return AddressesPage();
+                })),
                 style: OutlinedButton.styleFrom(primary: Colors.blue),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

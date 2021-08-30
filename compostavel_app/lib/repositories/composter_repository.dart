@@ -74,13 +74,27 @@ class ComposterRepository extends ChangeNotifier {
     }
   }
 
-  save(Composter composter) async {
+  save(Composter composter, Address? address) async {
     await db
         .collection('Composteiras/${auth.user!.email}/Composteiras')
         .doc(composter.name)
         .set({
       'nome': composter.name,
       'data_inicio': composter.startDate,
+    });
+    await db
+        .collection(
+            'Composteiras/${auth.user!.email}/Composteiras/${composter.name}/Endereco')
+        .doc(address!.name)
+        .set({
+      'nome': address.name,
+      'bairro': address.district,
+      'cep': address.cep,
+      'cidade': address.city,
+      'complemento': address.complement,
+      'estado': address.state,
+      'logradouro': address.street,
+      'numero': address.number,
     });
     _composters.clear();
     notifyListeners();

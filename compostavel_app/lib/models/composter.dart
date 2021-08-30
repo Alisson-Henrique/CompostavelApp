@@ -6,7 +6,7 @@ class Composter {
   int? ph;
   String? lastDateUpdate;
   String startDate;
-  Andress? andress;
+  Address? andress;
   Composter_State? composterState;
   String? note;
 
