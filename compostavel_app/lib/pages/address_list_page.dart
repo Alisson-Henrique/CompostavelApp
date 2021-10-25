@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:compostavel_app/models/address.dart';
 import 'package:compostavel_app/pages/address_registration_page.dart';
 import 'package:compostavel_app/repositories/address_repository.dart';
@@ -16,53 +17,92 @@ class _AddressesPageState extends State<AddressesPage> {
   Widget build(BuildContext context) {
     AddressRepository addressRepository =
         Provider.of<AddressRepository>(context);
-    addressRepository.readAddress();
-    List<Address> addresses = addressRepository.getAddresses();
+
+    Stream<QuerySnapshot> _addressesStream =
+        addressRepository.getAddressesSnapshot();
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Endereços"),
       ),
-      body: ListView.separated(
-          itemBuilder: (BuildContext context, int addressIndex) {
-            return ListTile(
-              leading: Icon(Icons.location_on_sharp),
-              title: Text(
-                addresses[addressIndex].name,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
+      body: StreamBuilder<QuerySnapshot>(
+          stream: _addressesStream,
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: Text('Ocorreu um erro!'));
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.data?.docs.length == 0) {
+              return Center(child: Text('Nenhum Endereço cadastrado'));
+            }
+            return ListView(
+                children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data =
+                  document.data()! as Map<String, dynamic>;
+              return ListTile(
+                leading: Icon(Icons.location_on_sharp),
+                title: Text(
+                  data["nome"],
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              trailing: Container(
-                width: 100,
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.edit, color: Colors.red),
-                      onPressed: () {
-                        addressRepository.remove(addresses[addressIndex]);
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        addressRepository.remove(addresses[addressIndex]);
-                      },
-                    ),
-                  ],
+                trailing: Container(
+                  width: 100,
+                  child: Row(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.orange),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return AddressRegisterPage(
+                              address: Address(
+                                  name: data["nome"],
+                                  street: data["logradouro"],
+                                  city: data["cidade"],
+                                  cep: data["cep"],
+                                  state: data["estado"],
+                                  district: data["bairro"],
+                                  number: data["numero"],
+                                  complement: data["complemento"]),
+                            );
+                          }));
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          addressRepository.remove(data["nome"]);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              selected: false,
-            );
-          },
-          padding: EdgeInsets.all(16),
-          separatorBuilder: (_, __) => Divider(),
-          itemCount: addresses.length),
+                selected: false,
+              );
+            }).toList());
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () =>
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return AddressRegisterPage();
+          return AddressRegisterPage(
+            address: Address(
+                name: "",
+                street: "",
+                city: "",
+                cep: "",
+                state: "",
+                district: "",
+                number: "",
+                complement: ""),
+          );
         })),
         child: Icon(Icons.add_location),
       ),

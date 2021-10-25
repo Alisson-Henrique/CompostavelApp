@@ -1,23 +1,30 @@
 import 'package:compostavel_app/models/address.dart';
 
+import 'composter_state.dart';
+
 class Composter {
   String name;
   int? temperature;
   int? ph;
+  int? moisture;
   String? lastDateUpdate;
   String startDate;
   Address? andress;
-  Composter_State? composterState;
+  String? composterState;
   String? note;
+  int? visitationIdLastUpdate;
 
-  Composter(
-      {required this.name,
-      required this.startDate,
-      this.temperature,
-      this.ph,
-      this.lastDateUpdate,
-      this.composterState,
-      this.note});
+  Composter({
+    required this.name,
+    required this.startDate,
+    this.temperature,
+    this.ph,
+    this.lastDateUpdate,
+    this.composterState,
+    this.note,
+    this.visitationIdLastUpdate,
+    this.moisture,
+  });
 
   factory Composter.fromJson(Map<String, dynamic> json) {
     return Composter(
@@ -25,9 +32,4 @@ class Composter {
       startDate: json['start_data'],
     );
   }
-}
-
-enum Composter_State {
-  ATIVA,
-  FINALIZADA,
 }

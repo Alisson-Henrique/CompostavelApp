@@ -11,7 +11,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class AddressRegisterPage extends StatefulWidget {
-  AddressRegisterPage({Key? key}) : super(key: key);
+  Address address;
+  AddressRegisterPage({Key? key, required this.address}) : super(key: key);
 
   @override
   _AddressRegisterPageState createState() => _AddressRegisterPageState();
@@ -33,9 +34,26 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
   bool isPop = true;
   bool isLoading = false;
   late UserData userData;
+
+  String labelButton = "Cadastrar";
   @override
   void initState() {
     super.initState();
+    edit();
+  }
+
+  edit() {
+    if (widget.address.name != "") {
+      name.text = widget.address.name;
+      street.text = widget.address.street;
+      city.text = widget.address.city;
+      cep.text = widget.address.cep;
+      state.text = widget.address.state;
+      district.text = widget.address.district;
+      number.text = widget.address.number;
+      complement.text = widget.address.complement;
+      labelButton = "Editar";
+    }
   }
 
   register() async {
@@ -117,42 +135,52 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: TextFormField(
-                  controller: number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Número",
-                  ),
-                ),
+                    controller: number,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Número",
+                    ),
+                    keyboardType: TextInputType.text),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: TextFormField(
-                  controller: city,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Cidade",
-                  ),
-                ),
+                    controller: city,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Cidade",
+                    ),
+                    keyboardType: TextInputType.text),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: TextFormField(
-                  controller: cep,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "CEP",
-                  ),
-                ),
+                    controller: state,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Estado",
+                    ),
+                    keyboardType: TextInputType.text),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: TextFormField(
-                  controller: complement,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Complemento",
-                  ),
-                ),
+                    controller: cep,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "CEP",
+                    ),
+                    keyboardType: TextInputType.text),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: TextFormField(
+                    controller: complement,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Complemento",
+                    ),
+                    keyboardType: TextInputType.text),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -188,7 +216,7 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
                             Padding(
                               padding: EdgeInsets.all(16.0),
                               child: Text(
-                                "Cadastrar",
+                                labelButton,
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),

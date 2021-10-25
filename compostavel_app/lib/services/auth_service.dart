@@ -53,16 +53,22 @@ class AuthService extends ChangeNotifier {
         throw AuthException("Senhas diferentes.");
       }
     } on FirebaseAuthException catch (exception) {
+      print(exception.code);
       if (exception.code == 'weak-password') {
         throw AuthException("Senha Fraca.");
       } else if (exception.code == 'email-already-in-use') {
         throw AuthException("Email já cadastrado.");
+      } else if (exception.code == 'invalid-email') {
+        throw AuthException("Email Inválido.");
       }
     }
   }
 
   login(String email, String password) async {
     try {
+      if (email == "" || password == "") {
+        throw AuthException("Campos Obrigatórios.");
+      }
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       _getUser();
     } on FirebaseAuthException catch (exception) {

@@ -6,11 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ComposterRegistration extends StatefulWidget {
-  List<String> addressesNames;
-  List<Address> addresses;
-  ComposterRegistration(
-      {Key? key, required this.addressesNames, required this.addresses})
-      : super(key: key);
+  ComposterRegistration({Key? key}) : super(key: key);
 
   @override
   _ComposterRegistrationState createState() => _ComposterRegistrationState();
@@ -28,21 +24,25 @@ class _ComposterRegistrationState extends State<ComposterRegistration> {
   @override
   Widget build(BuildContext context) {
     save() {
-      Address? address = addressRepository.getAddressesByName(valueChoice);
+      if (valueChoice != null) {
+        Address? address = addressRepository.getAddressesByName(valueChoice);
 
-      composterRepository.save(
-          Composter(
-            name: name.text,
-            startDate: startDate.text,
-          ),
-          address);
-
-      setState(() {
-        name.text = "";
-        startDate.text = "";
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Composteira Cadastrada com Sucesso!")));
+        composterRepository.save(
+            Composter(
+              name: name.text,
+              startDate: startDate.text,
+            ),
+            address);
+        setState(() {
+          name.text = "";
+          startDate.text = "";
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Composteira Cadastrada com Sucesso!")));
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Escolha Um Endereço!")));
+      }
     }
 
     composterRepository = context.watch<ComposterRepository>();

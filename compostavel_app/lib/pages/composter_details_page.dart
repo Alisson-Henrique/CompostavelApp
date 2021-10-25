@@ -3,19 +3,28 @@ import 'package:compostavel_app/pages/anddress_page.dart';
 import 'package:compostavel_app/pages/composter_monitoring_page.dart';
 import 'package:compostavel_app/pages/composter_producers_page.dart';
 import 'package:compostavel_app/pages/composter_visitation_page.dart';
+import 'package:compostavel_app/pages/visitation_list_page.dart';
+import 'package:compostavel_app/repositories/composter_repository.dart';
+import 'package:compostavel_app/repositories/visitation_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ComposterDetailsPage extends StatefulWidget {
-  Composter composter;
-  ComposterDetailsPage({Key? key, required this.composter}) : super(key: key);
+  String composterName;
+  ComposterDetailsPage({Key? key, required this.composterName})
+      : super(key: key);
 
   @override
   _ComposterDetailsState createState() => _ComposterDetailsState();
 }
 
 class _ComposterDetailsState extends State<ComposterDetailsPage> {
+  late Composter composter;
   @override
   Widget build(BuildContext context) {
+    ComposterRepository composterRepository =
+        Provider.of<ComposterRepository>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -25,7 +34,7 @@ class _ComposterDetailsState extends State<ComposterDetailsPage> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(widget.composter.name),
+            title: Text(widget.composterName),
             leading: IconButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -47,21 +56,15 @@ class _ComposterDetailsState extends State<ComposterDetailsPage> {
           ),
           body: TabBarView(children: [
             ComposterMonitoringPage(
-              composter: widget.composter,
+              composterName: widget.composterName,
             ),
             ComposterProducersPage(
-              composter: widget.composter,
+              composterName: widget.composterName,
             ),
-            ComposterVisitationPage(
-              composter: widget.composter,
-            ),
+            VisitationList(
+              composterName: widget.composterName,
+            )
           ]),
-          floatingActionButton: FloatingActionButton(
-              onPressed: () => Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return AnddressPage();
-                  })),
-              child: Icon(Icons.location_on_sharp)),
         ),
       ),
     );

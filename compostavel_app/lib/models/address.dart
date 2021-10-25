@@ -6,7 +6,7 @@ class Address {
   String cep;
   String district;
   String number;
-  String? complement;
+  String complement;
   Address({
     required this.name,
     required this.street,
@@ -15,6 +15,6 @@ class Address {
     required this.state,
     required this.district,
     required this.number,
-    this.complement,
+    required this.complement,
   });
 }

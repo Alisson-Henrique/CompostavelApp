@@ -72,6 +72,10 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Email",
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: Colors.black54,
+                      ),
                     ),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
@@ -84,12 +88,17 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                 child: TextFormField(
-                  controller: password,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Senha",
-                  ),
-                ),
+                    controller: password,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Senha",
+                      prefixIcon: const Icon(
+                        Icons.lock_outline,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    obscureText: true,
+                    keyboardType: TextInputType.visiblePassword),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
@@ -140,6 +149,21 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(
                   toggleButton,
                   style: TextStyle(fontSize: 20),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return RegisterPage(
+                        typeUsert: Type_User.PRODUCER,
+                      );
+                    }),
+                  );
+                },
+                child: Text(
+                  "Recuperar Senha",
+                  style: TextStyle(fontSize: 16),
                 ),
               )
             ]),

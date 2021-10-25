@@ -22,7 +22,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final confirmPassword = TextEditingController();
 
   late UserDataRepository userDataRepository;
-  bool isPop = true;
   bool isLoading = false;
   late UserData userData;
   @override
@@ -32,14 +31,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
   register() async {
     setState(() => isLoading = true);
-    setState(() => isPop = true);
+
     try {
       await context
           .read<AuthService>()
           .register(email.text, password.text, confirmPassword.text, userData);
     } on AuthException catch (e) {
       setState(() => isLoading = false);
-      setState(() => isPop = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.message),
@@ -76,8 +74,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       keyboardType: TextInputType.name,
                       validator: (value) {
+                        String patttern = r'(^[a-zA-Z ]*$)';
+                        RegExp regExp = new RegExp(patttern);
                         if (value!.isEmpty) {
                           return "Nome vazio";
+                        } else if (!regExp.hasMatch(value)) {
+                          return "O nome deve conter caracteres de a-z ou A-Z";
                         }
                         return null;
                       })),
@@ -126,9 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       register();
 
-                      if (isPop) {
-                        Navigator.pop(context);
-                      }
+                      Navigator.pop(context);
                     }
                   },
                   child: Row(
