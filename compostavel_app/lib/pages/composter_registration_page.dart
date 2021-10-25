@@ -3,6 +3,7 @@ import 'package:compostavel_app/models/composter.dart';
 import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:provider/provider.dart';
 
 class ComposterRegistration extends StatefulWidget {
@@ -15,7 +16,7 @@ class ComposterRegistration extends StatefulWidget {
 class _ComposterRegistrationState extends State<ComposterRegistration> {
   final formKey = GlobalKey<FormState>();
   final name = TextEditingController();
-  final startDate = TextEditingController();
+  final startDate = MaskedTextController(mask: '00/00/0000');
   bool isLoading = false;
   late ComposterRepository composterRepository;
   late AddressRepository addressRepository;
@@ -49,6 +50,7 @@ class _ComposterRegistrationState extends State<ComposterRegistration> {
     addressRepository = context.watch<AddressRepository>();
     addressRepository.readAddress();
     List listItem = addressRepository.getAddressesNames();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Cadastrar Composteira"),
