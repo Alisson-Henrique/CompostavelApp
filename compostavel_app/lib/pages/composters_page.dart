@@ -62,7 +62,7 @@ class _CompostersState extends State<CompostersPage> {
                     document.data()! as Map<String, dynamic>;
                 return ListTile(
                   leading: SizedBox(
-                    child: Image.asset("images/composter_icon.png"),
+                    child: Image.asset("images/composteira.png"),
                     width: 40,
                   ),
                   title: Text(

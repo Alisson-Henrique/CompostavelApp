@@ -38,8 +38,8 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
   String labelButton = "Cadastrar";
   @override
   void initState() {
-    super.initState();
     edit();
+    super.initState();
   }
 
   edit() {
