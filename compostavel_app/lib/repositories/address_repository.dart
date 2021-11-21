@@ -131,4 +131,19 @@ class AddressRepository extends ChangeNotifier {
         .doc("1")
         .snapshots();
   }
+
+  Stream<DocumentSnapshot> getDocumentSnapshot(String name) {
+    return db
+        .collection("Usuarios/${auth.user!.email}/Enderecos")
+        .doc(name)
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot> getDocumentSnapshotByUser(
+      String addressName, String recipientEmail) {
+    return db
+        .collection("Usuarios/$recipientEmail/Enderecos")
+        .doc(addressName)
+        .snapshots();
+  }
 }

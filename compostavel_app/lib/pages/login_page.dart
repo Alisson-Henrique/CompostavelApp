@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isLogin = true;
   bool isLoading = false;
   late String title;
+  late String subTitle;
   late String actionButton;
   late String toggleButton;
 
@@ -31,9 +32,10 @@ class _LoginPageState extends State<LoginPage> {
 
   setFormAction() {
     setState(() {
-      title = "Bem vindo!";
+      title = "CompoIFPB";
       actionButton = "Login";
       toggleButton = "Novo Cadastro";
+      subTitle = "Bem Vindo!";
     });
   }
 
@@ -62,6 +64,14 @@ class _LoginPageState extends State<LoginPage> {
                 title,
                 style: TextStyle(
                     fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: -1.5,
+                    color: Colors.green),
+              ),
+              Text(
+                subTitle,
+                style: TextStyle(
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     letterSpacing: -1.5),
               ),

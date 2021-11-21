@@ -58,9 +58,30 @@ class _VisitationListState extends State<VisitationList> {
                   ),
                 ),
                 trailing: Container(
-                  width: 50,
+                  width: 100,
                   child: Row(
                     children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.orange),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return RegisterVisitationPage(
+                                  composterName: widget.composterName,
+                                  visitation: Visitation(
+                                      id: data["id"],
+                                      name: data["responsável"],
+                                      temperature: data["temperatura"],
+                                      ph: data["ph"],
+                                      moisture: data["umidade"],
+                                      date: data["data"],
+                                      note: data["observações"],
+                                      composterState:
+                                          data["estado_composteira"]));
+                            }),
+                          );
+                        },
+                      ),
                       IconButton(
                         icon: Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
@@ -107,6 +128,7 @@ class _VisitationListState extends State<VisitationList> {
           return RegisterVisitationPage(
             composterName: widget.composterName,
             name: visitationRepository.auth.user!.email,
+            visitation: new Visitation(id: 0, name: ""),
           );
         })),
         child: Icon(Icons.add),

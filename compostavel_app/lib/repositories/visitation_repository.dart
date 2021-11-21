@@ -70,8 +70,11 @@ class VisitationRepository extends ChangeNotifier {
         visitationIdLastUpdate: data["id_última_atualização"],
         composterState: data["estado_composteira"]);
 
-    var id = composter.visitationIdLastUpdate;
-    id = id! + 1;
+    var id = visitation!.id;
+    if (id == 0) {
+      var id = composter.visitationIdLastUpdate;
+      id = id! + 1;
+    }
 
     final DateTime now = DateTime.now();
     final DateFormat formatter = DateFormat('dd/MM/yyyy');

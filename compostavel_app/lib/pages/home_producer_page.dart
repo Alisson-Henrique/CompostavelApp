@@ -1,5 +1,6 @@
 import 'package:compostavel_app/pages/composters_page.dart';
 import 'package:compostavel_app/pages/compound_list.dart';
+import 'package:compostavel_app/pages/donation_list_made_page.dart';
 import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,10 @@ class _HomeProducerPageState extends State {
             Padding(
               padding: EdgeInsets.all(10),
               child: OutlinedButton(
-                onPressed: () => null,
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return DonationListMadePage(path: "Recebidas");
+                })),
                 style: OutlinedButton.styleFrom(primary: Colors.orange),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

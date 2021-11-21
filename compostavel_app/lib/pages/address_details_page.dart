@@ -1,38 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:compostavel_app/models/composter.dart';
-import 'package:compostavel_app/models/composter_state.dart';
-import 'package:compostavel_app/pages/composter_address_page.dart';
-import 'package:compostavel_app/repositories/address_repository.dart';
-import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class ComposterMonitoringPage extends StatefulWidget {
-  String composterName;
-  ComposterMonitoringPage({Key? key, required this.composterName})
-      : super(key: key);
+class AddressDetailsPage extends StatefulWidget {
+  Stream<DocumentSnapshot> addressStream;
+  AddressDetailsPage({Key? key, required this.addressStream}) : super(key: key);
 
   @override
-  _ComposterMonitoringState createState() => _ComposterMonitoringState();
+  _AddressDetailsPageState createState() => _AddressDetailsPageState();
 }
 
-class _ComposterMonitoringState extends State<ComposterMonitoringPage> {
+class _AddressDetailsPageState extends State<AddressDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    ComposterRepository composterRepository =
-        Provider.of<ComposterRepository>(context);
-    final Stream<DocumentSnapshot> _usersStream =
-        composterRepository.getComposterSnapshot(widget.composterName);
-
-    AddressRepository addressRepository =
-        Provider.of<AddressRepository>(context);
-
-    final Stream<DocumentSnapshot> _addressStream = addressRepository
-        .getAddressSnapshotByComposterName(widget.composterName);
-
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Endereço"),
+      ),
       body: StreamBuilder<DocumentSnapshot>(
-          stream: _usersStream,
+          stream: widget.addressStream,
           builder:
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.hasError) {
@@ -59,7 +44,7 @@ class _ComposterMonitoringState extends State<ComposterMonitoringPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Nome:",
+                                "Nome do local:",
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
@@ -78,64 +63,51 @@ class _ComposterMonitoringState extends State<ComposterMonitoringPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(right: 40),
+                            padding: EdgeInsets.only(right: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Temperatura:",
+                                  "logradouro:",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
                                 ),
                                 Text(
-                                  data["temperatura"].toString(),
+                                  data["logradouro"].toString(),
                                   style: TextStyle(fontSize: 18),
                                 )
                               ],
                             ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "ph:",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                              ),
-                              Text(
-                                data["ph"].toString(),
-                                style: TextStyle(fontSize: 18),
-                              )
-                            ],
-                          ),
+                          )
                         ],
                       ),
                     ),
                     Padding(
-                        padding: EdgeInsets.only(top: 20),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 40),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Umidade:",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                    ),
-                                    Text(
-                                      data["umidade"].toString(),
-                                      style: TextStyle(fontSize: 18),
-                                    )
-                                  ],
-                                ),
+                      padding: EdgeInsets.only(top: 20),
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 40),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Número:",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  Text(
+                                    data["numero"].toString(),
+                                    style: TextStyle(fontSize: 18),
+                                  )
+                                ],
                               ),
-                            ])),
+                            ),
+                          ]),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: Row(
@@ -147,31 +119,17 @@ class _ComposterMonitoringState extends State<ComposterMonitoringPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Data de Inicio:",
+                                  "Bairro:",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
                                 ),
                                 Text(
-                                  data["data_inicio"],
+                                  data["bairro"],
                                   style: TextStyle(fontSize: 18),
                                 )
                               ],
                             ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Ultima Atualização:",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                              ),
-                              Text(
-                                data["última_atualização"],
-                                style: TextStyle(fontSize: 18),
-                              )
-                            ],
                           ),
                         ],
                       ),
@@ -193,11 +151,25 @@ class _ComposterMonitoringState extends State<ComposterMonitoringPage> {
                                       fontSize: 18),
                                 ),
                                 Text(
-                                  data["estado_composteira"],
+                                  data["estado"],
                                   style: TextStyle(fontSize: 18),
                                 )
                               ],
                             ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Cidade:",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              Text(
+                                data["cidade"],
+                                style: TextStyle(fontSize: 18),
+                              )
+                            ],
                           ),
                         ],
                       ),
@@ -213,13 +185,13 @@ class _ComposterMonitoringState extends State<ComposterMonitoringPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Observações:",
+                                  "CEP:",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
                                 Text(
-                                  data["observações"],
+                                  data["cep"],
                                   style: TextStyle(fontSize: 16),
                                 )
                               ],
@@ -233,13 +205,6 @@ class _ComposterMonitoringState extends State<ComposterMonitoringPage> {
               ),
             );
           }),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () =>
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return ComposterAddressPage(
-                    composterName: widget.composterName);
-              })),
-          child: Icon(Icons.location_on_sharp)),
     );
   }
 }

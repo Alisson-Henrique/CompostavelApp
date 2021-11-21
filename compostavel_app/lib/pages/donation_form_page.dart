@@ -1,81 +1,64 @@
-import 'package:compostavel_app/models/composter.dart';
-import 'package:compostavel_app/models/visitation.dart';
-import 'package:compostavel_app/repositories/visitation_repository.dart';
-import 'package:compostavel_app/services/auth_service.dart';
+import 'package:compostavel_app/models/address.dart';
+import 'package:compostavel_app/models/donation.dart';
+import 'package:compostavel_app/repositories/address_repository.dart';
+import 'package:compostavel_app/repositories/donation_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:provider/provider.dart';
 
-class RegisterVisitationPage extends StatefulWidget {
-  String composterName;
-  String? name;
-  Visitation visitation;
-  RegisterVisitationPage(
-      {Key? key,
-      required this.composterName,
-      this.name,
-      required this.visitation})
-      : super(key: key);
+class DonationFormPage extends StatefulWidget {
+  Donation? donation;
+  DonationFormPage({Key? key, this.donation}) : super(key: key);
 
   @override
-  _RegisterVisitationPageState createState() => _RegisterVisitationPageState();
+  _DonationFormPageState createState() => _DonationFormPageState();
 }
 
-class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
+class _DonationFormPageState extends State<DonationFormPage> {
   final formKey = GlobalKey<FormState>();
-  final temperature = TextEditingController();
-  final ph = TextEditingController();
-  final date = TextEditingController();
+  final recipientEmail = TextEditingController();
+  final weight = TextEditingController();
+  final collenctionDate = MaskedTextController(mask: '00/00/0000');
+  final hours = MaskedTextController(mask: '00:00');
   final note = TextEditingController();
-  final moisture = TextEditingController();
 
   bool isLoading = false;
-  late VisitationRepository visitationRepository;
+  bool edit = false;
+  late DonationRepository donationRepository;
+  late Donation donation;
 
-  late Visitation visitation;
-
-  var listItem = ["ATIVA", "FINALIZADA"];
+  late AddressRepository addressRepository;
+  String? valueChoice;
 
   @override
   Widget build(BuildContext context) {
-    visitationRepository = context.watch<VisitationRepository>();
-
-    String valueChoice = listItem[0];
-    bool isEdit = false;
-
-    if (widget.visitation.id != 0) {
-      isEdit = true;
-      temperature.text = widget.visitation.temperature.toString();
-      ph.text = widget.visitation.ph.toString();
-      date.text = widget.visitation.date.toString();
-      note.text = widget.visitation.note.toString();
-      moisture.text = widget.visitation.moisture.toString();
-    }
-
-    saveVisitation() async {
-      setState(() => isLoading = true);
+    donationRepository = context.watch<DonationRepository>();
+    save() {
       try {
-        visitationRepository.save(
-          widget.composterName,
-          visitation,
-        );
-      } on AuthException catch (e) {
-        setState(() => isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.message),
-          ),
-        );
+        Address? address = addressRepository.getAddressesByName(valueChoice);
+        donationRepository.save(donation, address);
+      } catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Deu algum erro!")));
       }
     }
 
+    if (widget.donation != null) {
+      recipientEmail.text = widget.donation!.recipientEmail;
+      weight.text = widget.donation!.weight.toString();
+      collenctionDate.text = widget.donation!.collenctionDate;
+      hours.text = widget.donation!.hours;
+      note.text = widget.donation!.note;
+      edit = true;
+    }
+
+    addressRepository = context.watch<AddressRepository>();
+    addressRepository.readAddress();
+    List listItem = addressRepository.getAddressesNames();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Registrar Visita"),
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back)),
+        title: Text("Fazer Doação"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -89,17 +72,15 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                   padding:
                       EdgeInsets.only(top: 10, bottom: 5, left: 20, right: 20),
                   child: TextFormField(
-                      controller: temperature,
+                      controller: recipientEmail,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: "Temperatura(°c)",
+                        labelText: "Email Destinatário",
                       ),
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        String patttern = r'(^[a-zA-Z ]*$)';
-                        RegExp regExp = new RegExp(patttern);
-                        if (regExp.hasMatch(value!)) {
-                          return "A temperatura só deve conter dígitos";
+                        if (value!.isEmpty) {
+                          return "O Email Destinatário vazío";
                         }
                         return null;
                       }),
@@ -107,17 +88,17 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: TextFormField(
-                      controller: ph,
+                      controller: weight,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: "ph",
+                        labelText: "Peso",
                       ),
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         String patttern = r'(^[a-zA-Z ]*$)';
                         RegExp regExp = new RegExp(patttern);
                         if (regExp.hasMatch(value!)) {
-                          return "A ph só deve conter dígitos";
+                          return "O peso só deve conter dígitos";
                         }
                         return null;
                       }),
@@ -125,45 +106,46 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: TextFormField(
-                      controller: moisture,
+                      controller: collenctionDate,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: "Umidade",
+                        labelText: "Data de Coleta",
+                      ),
+                      keyboardType: TextInputType.datetime,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "A data de Coleta está vazia";
+                        }
+                        return null;
+                      }),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: TextFormField(
+                      controller: hours,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Horas",
                       ),
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         String patttern = r'(^[a-zA-Z ]*$)';
                         RegExp regExp = new RegExp(patttern);
                         if (regExp.hasMatch(value!)) {
-                          return "A umidade só deve conter dígitos";
+                          return "As horas só deve conter dígitos";
                         }
                         return null;
                       }),
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                      child: Text(
-                        "Estado",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: -1.5),
-                      ),
-                    )
-                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                   child: DropdownButton(
-                    hint: Text("Selecione o Estado atual"),
+                    hint: Text("Selecione o Endereço"),
                     value: valueChoice,
                     isExpanded: true,
                     onChanged: (newValue) {
                       setState(() {
-                        valueChoice = newValue as String;
+                        valueChoice = newValue as String?;
                       });
                     },
                     items: listItem.map((valueItem) {
@@ -181,7 +163,7 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                       maxLines: 4,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: "Observações",
+                        labelText: "Descrição",
                       ),
                       keyboardType: TextInputType.text),
                 ),
@@ -190,30 +172,32 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
-                        if (isEdit) {
-                          visitation = new Visitation(
-                              id: widget.visitation.id,
-                              name: widget.name!,
-                              date: date.text,
-                              moisture: int.parse(moisture.text),
-                              ph: int.parse(ph.text),
-                              temperature: int.parse(temperature.text),
-                              note: note.text,
-                              composterState: valueChoice);
-                          saveVisitation();
+                        if (!edit) {
+                          donation = Donation(
+                            id: "",
+                            recipientEmail: recipientEmail.text,
+                            senderEmail: "",
+                            weight: int.parse(weight.text),
+                            collenctionDate: collenctionDate.text,
+                            hours: hours.text,
+                            note: note.text,
+                            status: "AGENDADA",
+                            addressId: valueChoice.toString(),
+                          );
                         } else {
-                          visitation = new Visitation(
-                              id: 0,
-                              name: widget.name!,
-                              date: date.text,
-                              moisture: int.parse(moisture.text),
-                              ph: int.parse(ph.text),
-                              temperature: int.parse(temperature.text),
-                              note: note.text,
-                              composterState: valueChoice);
-                          saveVisitation();
+                          donation = Donation(
+                            id: widget.donation!.id,
+                            recipientEmail: recipientEmail.text,
+                            senderEmail: widget.donation!.senderEmail,
+                            weight: int.parse(weight.text),
+                            collenctionDate: collenctionDate.text,
+                            hours: hours.text,
+                            note: note.text,
+                            status: widget.donation!.status,
+                            addressId: valueChoice.toString(),
+                          );
                         }
-
+                        save();
                         Navigator.pop(context);
                       }
                     },
@@ -237,7 +221,7 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                               Padding(
                                 padding: EdgeInsets.all(16.0),
                                 child: Text(
-                                  "Registrar",
+                                  "Fazer",
                                   style: TextStyle(fontSize: 20),
                                 ),
                               ),

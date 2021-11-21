@@ -1,3 +1,4 @@
+import 'package:compostavel_app/pages/donation_list_made_page.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,10 @@ class _HomeDonorPageState extends State {
             Padding(
               padding: EdgeInsets.all(10),
               child: OutlinedButton(
-                onPressed: () => null,
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return DonationListMadePage(path: "Feitas");
+                })),
                 style: OutlinedButton.styleFrom(primary: Colors.red),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
