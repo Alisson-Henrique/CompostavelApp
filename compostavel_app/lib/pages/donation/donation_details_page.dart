@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:compostavel_app/pages/address_details_page.dart';
+import 'package:compostavel_app/pages/address/address_details_page.dart';
 import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:compostavel_app/repositories/donation_repository.dart';
 import 'package:compostavel_app/services/util_service.dart';

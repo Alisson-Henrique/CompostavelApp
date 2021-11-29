@@ -1,6 +1,10 @@
-import 'package:compostavel_app/pages/composters_page.dart';
-import 'package:compostavel_app/pages/compound_list.dart';
-import 'package:compostavel_app/pages/donation_list_made_page.dart';
+import 'package:compostavel_app/pages/composter/composter_list_page.dart';
+import 'package:compostavel_app/pages/compound/compound_list.dart';
+import 'package:compostavel_app/pages/donation/donation_list_made_page.dart';
+import 'package:compostavel_app/pages/reporting/reporting_composter_page.dart';
+import 'package:compostavel_app/pages/reporting/reporting_list_page.dart';
+import 'package:compostavel_app/pages/visitation/seek_visitation_page.dart';
+import 'package:compostavel_app/pages/visitation/visit_list_page.dart';
 import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +35,7 @@ class _HomeProducerPageState extends State {
               child: OutlinedButton(
                 onPressed: () => Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                  return CompostersPage();
+                  return ComposterListPage();
                 })),
                 style: OutlinedButton.styleFrom(primary: Colors.green),
                 child: Row(
@@ -54,7 +58,7 @@ class _HomeProducerPageState extends State {
               child: OutlinedButton(
                 onPressed: () => Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                  return CompostersPage();
+                  return VisitListpage();
                 })),
                 style: OutlinedButton.styleFrom(primary: Colors.red),
                 child: Row(
@@ -111,6 +115,29 @@ class _HomeProducerPageState extends State {
                       padding: EdgeInsets.all(16.0),
                       child: Text(
                         "Compostos",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: OutlinedButton(
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return ReportingListPage();
+                })),
+                style: OutlinedButton.styleFrom(primary: Colors.purple),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.inventory),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "Relatórios",
                         style: TextStyle(fontSize: 20),
                       ),
                     ),

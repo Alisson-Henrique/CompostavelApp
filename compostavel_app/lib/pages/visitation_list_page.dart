@@ -10,7 +10,10 @@ import 'package:provider/provider.dart';
 
 class VisitationList extends StatefulWidget {
   String composterName;
-  VisitationList({Key? key, required this.composterName}) : super(key: key);
+  String userEmail;
+  VisitationList(
+      {Key? key, required this.composterName, required this.userEmail})
+      : super(key: key);
 
   @override
   _VisitationListState createState() => _VisitationListState();
@@ -23,7 +26,9 @@ class _VisitationListState extends State<VisitationList> {
   Widget build(BuildContext context) {
     VisitationRepository visitationRepository =
         Provider.of<VisitationRepository>(context);
-    _visitationStream = visitationRepository.getSnapshots(widget.composterName);
+
+    _visitationStream = visitationRepository.getSnapshots(
+        widget.composterName, widget.userEmail == "" ? "" : widget.userEmail);
 
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
@@ -58,7 +63,7 @@ class _VisitationListState extends State<VisitationList> {
                   ),
                 ),
                 trailing: Container(
-                  width: 100,
+                  width: widget.userEmail == "" ? 100 : 50,
                   child: Row(
                     children: <Widget>[
                       IconButton(
@@ -67,37 +72,41 @@ class _VisitationListState extends State<VisitationList> {
                           Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) {
                               return RegisterVisitationPage(
-                                  composterName: widget.composterName,
-                                  visitation: Visitation(
-                                      id: data["id"],
-                                      name: data["responsável"],
-                                      temperature: data["temperatura"],
-                                      ph: data["ph"],
-                                      moisture: data["umidade"],
-                                      date: data["data"],
-                                      note: data["observações"],
-                                      composterState:
-                                          data["estado_composteira"]));
+                                composterName: widget.composterName,
+                                visitation: Visitation(
+                                    id: data["id"],
+                                    name: data["responsável"],
+                                    temperature: data["temperatura"],
+                                    ph: data["ph"],
+                                    moisture: data["umidade"],
+                                    date: data["data"],
+                                    note: data["observações"],
+                                    composterState: data["estado_composteira"]),
+                                userEmail: "",
+                              );
                             }),
                           );
                         },
                       ),
-                      IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
-                        onPressed: () {
-                          visitationRepository.remove(
-                              widget.composterName,
-                              Visitation(
-                                id: data["id"],
-                                name: data["responsável"],
-                                temperature: data["temperatura"],
-                                ph: data["ph"],
-                                moisture: data["umidade"],
-                                date: data["data"],
-                                note: data["observações"],
-                              ));
-                        },
-                      ),
+                      Visibility(
+                        visible: widget.userEmail == "" ? true : false,
+                        child: IconButton(
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            visitationRepository.remove(
+                                widget.composterName,
+                                Visitation(
+                                  id: data["id"],
+                                  name: data["responsável"],
+                                  temperature: data["temperatura"],
+                                  ph: data["ph"],
+                                  moisture: data["umidade"],
+                                  date: data["data"],
+                                  note: data["observações"],
+                                ));
+                          },
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -129,6 +138,7 @@ class _VisitationListState extends State<VisitationList> {
             composterName: widget.composterName,
             name: visitationRepository.auth.user!.email,
             visitation: new Visitation(id: 0, name: ""),
+            userEmail: widget.userEmail == "" ? "" : widget.userEmail,
           );
         })),
         child: Icon(Icons.add),

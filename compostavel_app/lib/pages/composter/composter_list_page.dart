@@ -9,14 +9,14 @@ import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CompostersPage extends StatefulWidget {
-  CompostersPage({Key? key}) : super(key: key);
+class ComposterListPage extends StatefulWidget {
+  ComposterListPage({Key? key}) : super(key: key);
 
   @override
-  _CompostersState createState() => _CompostersState();
+  _ComposterListPageState createState() => _ComposterListPageState();
 }
 
-class _CompostersState extends State<CompostersPage> {
+class _ComposterListPageState extends State<ComposterListPage> {
   composterDetails(String composterName) {
     Navigator.push(
       context,

@@ -86,7 +86,7 @@ class VisitationRepository extends ChangeNotifier {
         .doc(id.toString())
         .set({
       'responsável': auth.user!.email,
-      'temperatura': visitation!.temperature,
+      'temperatura': visitation.temperature,
       'ph': visitation.ph,
       'umidade': visitation.moisture,
       'data': formatted,
@@ -124,10 +124,10 @@ class VisitationRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<QuerySnapshot> getSnapshots(String composterName) {
+  Stream<QuerySnapshot> getSnapshots(String composterName, String userEmail) {
     return db
         .collection(
-            'Composteiras/${auth.user!.email}/Composteiras/$composterName/Visitas')
+            'Composteiras/${userEmail == "" ? auth.user!.email : userEmail}/Composteiras/$composterName/Visitas')
         .orderBy("id", descending: true)
         .snapshots();
   }

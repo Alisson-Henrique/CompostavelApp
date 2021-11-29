@@ -9,16 +9,18 @@ import 'package:compostavel_app/repositories/visitation_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ComposterDetailsPage extends StatefulWidget {
+class VisitationManagerPage extends StatefulWidget {
   String composterName;
-  ComposterDetailsPage({Key? key, required this.composterName})
+  String userEmail;
+  VisitationManagerPage(
+      {Key? key, required this.composterName, required this.userEmail})
       : super(key: key);
 
   @override
-  _ComposterDetailsState createState() => _ComposterDetailsState();
+  _VisitationManagerPageState createState() => _VisitationManagerPageState();
 }
 
-class _ComposterDetailsState extends State<ComposterDetailsPage> {
+class _VisitationManagerPageState extends State<VisitationManagerPage> {
   late Composter composter;
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class _ComposterDetailsState extends State<ComposterDetailsPage> {
         primarySwatch: Colors.lightGreen,
       ),
       home: DefaultTabController(
-        length: 3,
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
             title: Text(widget.composterName),
@@ -46,9 +48,6 @@ class _ComposterDetailsState extends State<ComposterDetailsPage> {
                   icon: Icon(Icons.monitor),
                 ),
                 Tab(
-                  icon: Icon(Icons.person_add),
-                ),
-                Tab(
                   icon: Icon(Icons.calendar_today),
                 )
               ],
@@ -57,14 +56,11 @@ class _ComposterDetailsState extends State<ComposterDetailsPage> {
           body: TabBarView(children: [
             ComposterMonitoringPage(
               composterName: widget.composterName,
-              userEmail: "",
-            ),
-            ComposterProducersPage(
-              composterName: widget.composterName,
+              userEmail: widget.userEmail,
             ),
             VisitationList(
               composterName: widget.composterName,
-              userEmail: "",
+              userEmail: widget.userEmail,
             )
           ]),
         ),

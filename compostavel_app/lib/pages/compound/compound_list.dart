@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:compostavel_app/models/compound.dart';
-import 'package:compostavel_app/pages/compound_form_page.dart';
+import 'package:compostavel_app/pages/compound/compound_form_page.dart';
 import 'package:compostavel_app/repositories/compound_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

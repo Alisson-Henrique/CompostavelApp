@@ -116,6 +116,7 @@ class ComposterRepository extends ChangeNotifier {
       'estado_composteira': "PREPARAÇÃO",
       'id_última_atualização': 0,
       'última_atualização': "N/A",
+      'dono': auth.user!.email,
     });
     await db
         .collection(
@@ -161,6 +162,14 @@ class ComposterRepository extends ChangeNotifier {
   Stream<QuerySnapshot> getCompostersSnapshots() {
     return db
         .collection('Composteiras/${auth.user!.email}/Composteiras')
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot> getCompostersByUserEmailSnapshots(
+      String userEmail, String composterName) {
+    return db
+        .collection('Composteiras/$userEmail/Composteiras')
+        .doc('$composterName')
         .snapshots();
   }
 }

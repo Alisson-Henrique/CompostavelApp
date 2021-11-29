@@ -1,4 +1,4 @@
-import 'package:compostavel_app/pages/donation_list_made_page.dart';
+import 'package:compostavel_app/pages/donation/donation_list_made_page.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

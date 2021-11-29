@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 
 class ComposterMonitoringPage extends StatefulWidget {
   String composterName;
-  ComposterMonitoringPage({Key? key, required this.composterName})
+  String userEmail;
+  ComposterMonitoringPage(
+      {Key? key, required this.composterName, required this.userEmail})
       : super(key: key);
 
   @override
@@ -21,8 +23,14 @@ class _ComposterMonitoringState extends State<ComposterMonitoringPage> {
   Widget build(BuildContext context) {
     ComposterRepository composterRepository =
         Provider.of<ComposterRepository>(context);
-    final Stream<DocumentSnapshot> _usersStream =
-        composterRepository.getComposterSnapshot(widget.composterName);
+    final Stream<DocumentSnapshot> _composterStream;
+    if (widget.userEmail == "") {
+      _composterStream =
+          composterRepository.getComposterSnapshot(widget.composterName);
+    } else {
+      _composterStream = composterRepository.getCompostersByUserEmailSnapshots(
+          widget.userEmail, widget.composterName);
+    }
 
     AddressRepository addressRepository =
         Provider.of<AddressRepository>(context);
@@ -32,7 +40,7 @@ class _ComposterMonitoringState extends State<ComposterMonitoringPage> {
 
     return Scaffold(
       body: StreamBuilder<DocumentSnapshot>(
-          stream: _usersStream,
+          stream: _composterStream,
           builder:
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.hasError) {

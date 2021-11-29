@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:compostavel_app/models/donation.dart';
-import 'package:compostavel_app/pages/donation_details_page.dart';
-import 'package:compostavel_app/pages/donation_form_page.dart';
+import 'package:compostavel_app/pages/donation/donation_details_page.dart';
+import 'package:compostavel_app/pages/donation/donation_form_page.dart';
 import 'package:compostavel_app/repositories/donation_repository.dart';
 import 'package:compostavel_app/services/util_service.dart';
 import 'package:flutter/material.dart';

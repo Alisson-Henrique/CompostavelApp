@@ -6,7 +6,7 @@ import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'composters_page.dart';
+import 'composter/composter_list_page.dart';
 import 'home_producer_page.dart';
 
 class HomePage extends StatefulWidget {

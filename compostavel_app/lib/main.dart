@@ -5,6 +5,7 @@ import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:compostavel_app/repositories/compound_repository.dart';
 import 'package:compostavel_app/repositories/donation_repository.dart';
 import 'package:compostavel_app/repositories/user_data_repository.dart';
+import 'package:compostavel_app/repositories/visit_repository.dart';
 import 'package:compostavel_app/repositories/visitation_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,6 +43,10 @@ void main() async {
       ChangeNotifierProvider(
         create: (context) =>
             DonationRepository(auth: context.read<AuthService>()),
+      ),
+      ChangeNotifierProvider(
+        create: (context) =>
+            VisitReposiitory(auth: context.read<AuthService>()),
       ),
     ],
     child: Compostavel(),

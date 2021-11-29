@@ -1,5 +1,6 @@
 import 'package:compostavel_app/models/composter.dart';
 import 'package:compostavel_app/models/visitation.dart';
+import 'package:compostavel_app/repositories/visit_repository.dart';
 import 'package:compostavel_app/repositories/visitation_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +10,14 @@ class RegisterVisitationPage extends StatefulWidget {
   String composterName;
   String? name;
   Visitation visitation;
-  RegisterVisitationPage(
-      {Key? key,
-      required this.composterName,
-      this.name,
-      required this.visitation})
-      : super(key: key);
+  String userEmail;
+  RegisterVisitationPage({
+    Key? key,
+    required this.composterName,
+    this.name,
+    required this.visitation,
+    required this.userEmail,
+  }) : super(key: key);
 
   @override
   _RegisterVisitationPageState createState() => _RegisterVisitationPageState();
@@ -30,7 +33,7 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
 
   bool isLoading = false;
   late VisitationRepository visitationRepository;
-
+  late VisitReposiitory _visitReposiitory;
   late Visitation visitation;
 
   var listItem = ["ATIVA", "FINALIZADA"];
@@ -38,6 +41,7 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
   @override
   Widget build(BuildContext context) {
     visitationRepository = context.watch<VisitationRepository>();
+    _visitReposiitory = context.watch<VisitReposiitory>();
 
     String valueChoice = listItem[0];
     bool isEdit = false;
@@ -54,10 +58,15 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
     saveVisitation() async {
       setState(() => isLoading = true);
       try {
-        visitationRepository.save(
-          widget.composterName,
-          visitation,
-        );
+        if (widget.userEmail == "") {
+          visitationRepository.save(
+            widget.composterName,
+            visitation,
+          );
+        } else {
+          _visitReposiitory.save(
+              widget.composterName, visitation, widget.userEmail.toString());
+        }
       } on AuthException catch (e) {
         setState(() => isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(

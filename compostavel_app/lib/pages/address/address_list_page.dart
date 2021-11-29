@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:compostavel_app/models/address.dart';
-import 'package:compostavel_app/pages/address_registration_page.dart';
+import 'package:compostavel_app/pages/address/address_registration_page.dart';
 import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
