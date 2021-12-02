@@ -114,9 +114,10 @@ class ComposterRepository extends ChangeNotifier {
       'umidade': 0,
       'observações': "N/A",
       'estado_composteira': "PREPARAÇÃO",
-      'id_última_atualização': 0,
+      'id_última_atualização': 1,
       'última_atualização': "N/A",
       'dono': auth.user!.email,
+      'deleted_at': null
     });
     await db
         .collection(
@@ -146,7 +147,9 @@ class ComposterRepository extends ChangeNotifier {
     await db
         .collection("Composteiras/${auth.user!.email}/Composteiras")
         .doc(composterName)
-        .delete();
+        .update({'deleted_at': DateTime.now().toString()})
+        .then((value) => null)
+        .catchError((value) => null);
 
     change = true;
     notifyListeners();
@@ -162,6 +165,7 @@ class ComposterRepository extends ChangeNotifier {
   Stream<QuerySnapshot> getCompostersSnapshots() {
     return db
         .collection('Composteiras/${auth.user!.email}/Composteiras')
+        .where('deleted_at', isNull: true)
         .snapshots();
   }
 

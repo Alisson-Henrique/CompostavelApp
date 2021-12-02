@@ -65,7 +65,7 @@ class _ComposterContributorsListPageState
                         icon: Icon(Icons.close, color: Colors.red),
                         onPressed: () => {
                           visitRepositoy.removeContributor(
-                              data["email"], widget.composterName)
+                              data["email"], widget.composterName, data['id'])
                         },
                       ),
                     ],

@@ -28,8 +28,9 @@ class _DonationDetailsPageState extends State<DonationDetailsPage> {
   Widget build(BuildContext context) {
     DonationRepository donationRepository =
         Provider.of<DonationRepository>(context);
-    final Stream<DocumentSnapshot> _donationStream =
-        donationRepository.getDocumentSnapshotMade(widget.donationId);
+
+    final Stream<DocumentSnapshot> _donationStream = donationRepository
+        .getDocumentSnapshotMade(widget.donationId, widget.path);
 
     AddressRepository addressRepository =
         Provider.of<AddressRepository>(context);
@@ -38,7 +39,7 @@ class _DonationDetailsPageState extends State<DonationDetailsPage> {
     late String senderEmail;
 
     bool colected = widget.status == "REALIZADA" ? false : true;
-    ;
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Detalhes da Doação"),
@@ -68,8 +69,15 @@ class _DonationDetailsPageState extends State<DonationDetailsPage> {
 
               Map<String, dynamic> data = snapshot.data!.data();
 
-              _addressStream =
-                  addressRepository.getDocumentSnapshot(data["endereco"]);
+              if (widget.path == "Feitas") {
+                _addressStream =
+                    addressRepository.getDocumentSnapshot(data["endereco"]);
+              } else {
+                _addressStream =
+                    donationRepository.getAddressDocumentSnapshotByUser(
+                        data["endereco"], data["remetente"], data["id"]);
+              }
+
               senderEmail = data["remetente"];
 
               return SafeArea(

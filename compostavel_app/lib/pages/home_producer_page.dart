@@ -133,7 +133,7 @@ class _HomeProducerPageState extends State {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.inventory),
+                    Icon(Icons.my_library_books_rounded),
                     Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(

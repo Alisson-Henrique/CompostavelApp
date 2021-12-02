@@ -90,7 +90,7 @@ class _ReportingComposterResultPageState
                   width: 40,
                 ),
                 title: Text(
-                  data['data'].toString(),
+                  data['data'].toString() + "  Visita " + data['id'].toString(),
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w500,

@@ -72,8 +72,8 @@ class VisitationRepository extends ChangeNotifier {
 
     var id = visitation!.id;
     if (id == 0) {
-      var id = composter.visitationIdLastUpdate;
-      id = id! + 1;
+      id = composter.visitationIdLastUpdate!;
+      id = id + 1;
     }
 
     final DateTime now = DateTime.now();
@@ -107,6 +107,7 @@ class VisitationRepository extends ChangeNotifier {
       'observações': visitation.note,
       'estado_composteira': visitation.composterState,
       'id_última_atualização': id,
+      'deleted_at': null
     });
     _visitations.clear();
     change = true;
@@ -117,7 +118,7 @@ class VisitationRepository extends ChangeNotifier {
     await db
         .collection(
             "Composteiras/${auth.user!.email}/Composteiras/${composter}/Visitas")
-        .doc(visitation.name)
+        .doc(visitation.id.toString())
         .delete();
     _visitations.remove(visitation);
     change = true;

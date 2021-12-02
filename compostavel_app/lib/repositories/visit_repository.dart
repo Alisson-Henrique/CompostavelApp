@@ -3,6 +3,7 @@ import 'package:compostavel_app/databases/db_firestore.dart';
 import 'package:compostavel_app/models/composter.dart';
 import 'package:compostavel_app/models/visitation.dart';
 import 'package:compostavel_app/services/auth_service.dart';
+import 'package:compostavel_app/services/util_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -63,12 +64,12 @@ class VisitReposiitory extends ChangeNotifier {
       'email': userEmail,
     });
 
-    await db
-        .collection("Composteiras/$userEmail/Colaboracoes")
-        .doc(auth.user!.email)
-        .set({
+    var id = Util.CreateId();
+
+    await db.collection("Composteiras/$userEmail/Colaboracoes").doc(id).set({
       'dono': auth.user!.email,
       'nome_composteira': composterName,
+      'id': id
     });
   }
 
@@ -80,11 +81,16 @@ class VisitReposiitory extends ChangeNotifier {
         .delete();
   }
 
-  removeContributor(String userEmail, String composterName) async {
+  removeContributor(String userEmail, String composterName, String id) async {
     await db
         .collection(
             "Composteiras/${auth.user!.email}/Composteiras/$composterName/Colaboradores")
         .doc(userEmail)
+        .delete();
+
+    await db
+        .collection("Composteiras/${auth.user!.email}/Colaboracoes")
+        .doc(id)
         .delete();
   }
 
@@ -151,6 +157,7 @@ class VisitReposiitory extends ChangeNotifier {
       'observações': visitation.note,
       'estado_composteira': visitation.composterState,
       'id_última_atualização': id,
+      'deleted_at': null
     });
   }
 }

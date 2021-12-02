@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:compostavel_app/models/address.dart';
 import 'package:compostavel_app/models/composter.dart';
 import 'package:compostavel_app/repositories/address_repository.dart';
@@ -49,6 +50,7 @@ class _ComposterRegistrationState extends State<ComposterRegistration> {
     composterRepository = context.watch<ComposterRepository>();
     addressRepository = context.watch<AddressRepository>();
     addressRepository.readAddress();
+
     List listItem = addressRepository.getAddressesNames();
 
     return Scaffold(

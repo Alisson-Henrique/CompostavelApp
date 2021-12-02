@@ -30,8 +30,6 @@ class _ComposterListPageState extends State<ComposterListPage> {
   Widget build(BuildContext context) {
     ComposterRepository composterRepository =
         Provider.of<ComposterRepository>(context);
-    AddressRepository addressRepository =
-        Provider.of<AddressRepository>(context);
 
     final Stream<QuerySnapshot> _compostersStream =
         composterRepository.getCompostersSnapshots();

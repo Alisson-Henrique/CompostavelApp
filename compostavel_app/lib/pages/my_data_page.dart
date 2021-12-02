@@ -1,5 +1,6 @@
 import 'package:compostavel_app/pages/address/address_list_page.dart';
 import 'package:compostavel_app/pages/address/address_registration_page.dart';
+import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +13,10 @@ class MyDataPage extends StatefulWidget {
 }
 
 class _MyDataPageState extends State {
+  late AddressRepository addressRepository;
   @override
   Widget build(BuildContext context) {
+    addressRepository = context.watch<AddressRepository>();
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +53,10 @@ class _MyDataPageState extends State {
             Padding(
               padding: EdgeInsets.all(16),
               child: OutlinedButton(
-                onPressed: () => context.read<AuthService>().logout(),
+                onPressed: () => {
+                  addressRepository.clearCash(),
+                  context.read<AuthService>().logout()
+                },
                 style: OutlinedButton.styleFrom(primary: Colors.red),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

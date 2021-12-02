@@ -37,7 +37,7 @@ class _DonationFormPageState extends State<DonationFormPage> {
       try {
         Address? address = addressRepository.getAddressesByName(valueChoice);
         donationRepository.save(donation, address);
-      } catch (e) {
+      } on Exception catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Deu algum erro!")));
       }

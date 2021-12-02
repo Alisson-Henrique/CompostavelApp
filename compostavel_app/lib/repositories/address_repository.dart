@@ -146,4 +146,10 @@ class AddressRepository extends ChangeNotifier {
         .doc(addressName)
         .snapshots();
   }
+
+  clearCash() {
+    _addresses.clear();
+    change = true;
+    notifyListeners();
+  }
 }

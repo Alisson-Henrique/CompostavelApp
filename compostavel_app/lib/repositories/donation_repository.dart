@@ -22,6 +22,10 @@ class DonationRepository extends ChangeNotifier {
   }
 
   save(Donation donation, Address? address) async {
+    if (donation.recipientEmail == auth.user!.email) {
+      throw Exception();
+    }
+
     if (donation.id == "") {
       donation.id = Util.CreateId();
     }
@@ -57,6 +61,21 @@ class DonationRepository extends ChangeNotifier {
       'endereco': donation.addressId,
       'deleted_at': null,
     });
+
+    await db
+        .collection(
+            'Usuarios/${donation.recipientEmail}/Doacao/Recebidas/Doacoes/${donation.id}/Endereco')
+        .doc(address!.name)
+        .set({
+      'nome': address.name,
+      'bairro': address.district,
+      'cep': address.cep,
+      'cidade': address.city,
+      'complemento': address.complement,
+      'estado': address.state,
+      'logradouro': address.street,
+      'numero': address.number,
+    });
   }
 
   remove(String donationId) async {
@@ -75,16 +94,17 @@ class DonationRepository extends ChangeNotifier {
         .snapshots();
   }
 
-  Stream<DocumentSnapshot> getDocumentSnapshotMade(String donationId) {
+  Stream<DocumentSnapshot> getDocumentSnapshotMade(
+      String donationId, String path) {
     return db
-        .collection("Usuarios/${auth.user!.email}/Doacao/Feitas/Doacoes")
+        .collection("Usuarios/${auth.user!.email}/Doacao/$path/Doacoes")
         .doc(donationId)
         .snapshots();
   }
 
   cancel(String donationId, String recipientEmail) async {
     await db
-        .collection("Usuarios/${recipientEmail}/Doacao/Feitas/Doacoes")
+        .collection("Usuarios/$recipientEmail/Doacao/Feitas/Doacoes")
         .doc(donationId)
         .update({'estado_coleta': "CANCELADA"});
 
@@ -124,5 +144,14 @@ class DonationRepository extends ChangeNotifier {
         .update({'estado_coleta': "REALIZADA"})
         .then((value) => null)
         .catchError((value) => null);
+  }
+
+  Stream<DocumentSnapshot> getAddressDocumentSnapshotByUser(
+      String addressName, String recipientEmail, String donationId) {
+    return db
+        .collection(
+            "Usuarios/${auth.user!.email}/Doacao/Recebidas/Doacoes/$donationId/Endereco")
+        .doc(addressName)
+        .snapshots();
   }
 }
