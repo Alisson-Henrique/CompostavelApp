@@ -38,7 +38,8 @@ class _DonationDetailsPageState extends State<DonationDetailsPage> {
     late Stream<DocumentSnapshot> _addressStream;
     late String senderEmail;
 
-    bool colected = widget.status == "REALIZADA" ? false : true;
+    bool colected =
+        widget.status == "REALIZADA" || widget.path == "Feitas" ? false : true;
 
     return Scaffold(
         appBar: AppBar(

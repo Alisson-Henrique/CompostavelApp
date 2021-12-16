@@ -8,6 +8,7 @@ import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:provider/provider.dart';
 
 class AddressRegisterPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
   final name = TextEditingController();
   final street = TextEditingController();
   final city = TextEditingController();
-  final cep = TextEditingController();
+  final cep = MaskedTextController(mask: '00000-000');
   final state = TextEditingController();
   final district = TextEditingController();
   final number = TextEditingController();
@@ -120,6 +121,12 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
                       border: OutlineInputBorder(),
                       labelText: "Logradouro",
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Logradouro vazio";
+                      }
+                      return null;
+                    },
                     keyboardType: TextInputType.text),
               ),
               Padding(
@@ -130,6 +137,12 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
                       border: OutlineInputBorder(),
                       labelText: "Bairro",
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Bairro vazio";
+                      }
+                      return null;
+                    },
                     keyboardType: TextInputType.text),
               ),
               Padding(
@@ -140,6 +153,12 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
                       border: OutlineInputBorder(),
                       labelText: "Número",
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Número vazio";
+                      }
+                      return null;
+                    },
                     keyboardType: TextInputType.text),
               ),
               Padding(
@@ -150,6 +169,12 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
                       border: OutlineInputBorder(),
                       labelText: "Cidade",
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Cidade vazio";
+                      }
+                      return null;
+                    },
                     keyboardType: TextInputType.text),
               ),
               Padding(
@@ -160,6 +185,12 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
                       border: OutlineInputBorder(),
                       labelText: "Estado",
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Estado vazio";
+                      }
+                      return null;
+                    },
                     keyboardType: TextInputType.text),
               ),
               Padding(
@@ -170,6 +201,12 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
                       border: OutlineInputBorder(),
                       labelText: "CEP",
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "CEP vazio";
+                      }
+                      return null;
+                    },
                     keyboardType: TextInputType.text),
               ),
               Padding(
@@ -180,6 +217,12 @@ class _AddressRegisterPageState extends State<AddressRegisterPage> {
                       border: OutlineInputBorder(),
                       labelText: "Complemento",
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Complemento vazio";
+                      }
+                      return null;
+                    },
                     keyboardType: TextInputType.text),
               ),
               Padding(

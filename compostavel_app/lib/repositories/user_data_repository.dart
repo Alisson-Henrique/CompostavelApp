@@ -9,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 class UserDataRepository extends ChangeNotifier {
   UserData? userDate;
 
+  var change = true;
+
   late FirebaseFirestore db;
   late AuthService auth;
 
@@ -20,24 +22,37 @@ class UserDataRepository extends ChangeNotifier {
     await _startFireStore();
   }
 
-  Future<Type_User> getUserDataType() async {
-    Type_User type_user = Type_User.DONOR;
-
-    final docc = await FirebaseFirestore.instance
-        .collection("users/${auth.user!.uid}/dados")
-        .get();
-
-    final userData = docc.docs.forEach((doc) {
-      if (doc.get("name") == "Diego") {
-        if (doc.get("typeUser") == "Type_User.PRODUCER") {
-          type_user = Type_User.PRODUCER;
-        }
-      }
-    });
-    return type_user;
-  }
-
   _startFireStore() {
     db = DBFirestore.get();
+  }
+
+  UserData? getUserdata() {
+    return userDate;
+  }
+
+  read() async {
+    if (change) {
+      DocumentSnapshot userProgressSnapshot = await db
+          .collection('Usuarios/${auth.user!.email}/Dados')
+          .doc('Conta')
+          .get();
+
+      Map<String, dynamic> data = userProgressSnapshot.data();
+
+      userDate = UserData(
+        name: data['name'],
+        donateAmount: data['quantidade_doacao'],
+        composterAmount: data['quantidade_composteira'],
+        collaborationAmount: data['quantidade_colaboracoes'],
+        compoundAmount: data['quantidade_composto'],
+        visitAmount: data['quantidade_visita'],
+      );
+      change = false;
+      notifyListeners();
+    }
+  }
+
+  recoverPassword(String email) {
+    auth.recoverPassword(email);
   }
 }

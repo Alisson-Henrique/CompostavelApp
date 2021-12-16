@@ -1,4 +1,7 @@
+import 'package:compostavel_app/pages/badge/badge_list_page.dart';
 import 'package:compostavel_app/pages/donation/donation_list_made_page.dart';
+import 'package:compostavel_app/pages/tutorial/tutorial_list_page.dart';
+import 'package:compostavel_app/repositories/user_data_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +16,9 @@ class HomeDonorPage extends StatefulWidget {
 class _HomeDonorPageState extends State {
   @override
   Widget build(BuildContext context) {
+    UserDataRepository userDataRepository =
+        Provider.of<UserDataRepository>(context);
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +55,10 @@ class _HomeDonorPageState extends State {
             Padding(
               padding: EdgeInsets.all(10),
               child: OutlinedButton(
-                onPressed: () => null,
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return TutorialListPage();
+                })),
                 style: OutlinedButton.styleFrom(primary: Colors.lightGreen),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -69,7 +78,18 @@ class _HomeDonorPageState extends State {
             Padding(
               padding: EdgeInsets.all(10),
               child: OutlinedButton(
-                onPressed: () => null,
+                onPressed: () => {
+                  userDataRepository.change = true,
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return BadgeListPage(
+                          userType: "Doador",
+                        );
+                      },
+                    ),
+                  ),
+                },
                 style: OutlinedButton.styleFrom(primary: Colors.lightBlue),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

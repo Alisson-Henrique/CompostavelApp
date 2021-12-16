@@ -163,13 +163,39 @@ class _LoginPageState extends State<LoginPage> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) {
-                      return RegisterPage(
-                        typeUsert: Type_User.PRODUCER,
-                      );
-                    }),
-                  );
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                            "Recuperar senha?",
+                          ),
+                          actions: [
+                            MaterialButton(
+                              child: Text("Sim",
+                                  style: TextStyle(color: Colors.blue)),
+                              onPressed: () => {
+                                if (formKey.currentState!.validate())
+                                  {
+                                    context
+                                        .read<AuthService>()
+                                        .recoverPassword(email.text),
+                                    Navigator.pop(context),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                "Um email de recuperação de senha foi enviado para seu email")))
+                                  }
+                              },
+                            ),
+                            MaterialButton(
+                              child: Text("Não",
+                                  style: TextStyle(color: Colors.red)),
+                              onPressed: () => {Navigator.pop(context)},
+                            )
+                          ],
+                        );
+                      });
                 },
                 child: Text(
                   "Recuperar Senha",

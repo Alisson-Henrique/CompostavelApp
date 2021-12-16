@@ -1,9 +1,11 @@
 import 'package:compostavel_app/compostavel.dart';
 import 'package:compostavel_app/models/user_data.dart';
 import 'package:compostavel_app/repositories/address_repository.dart';
+import 'package:compostavel_app/repositories/badge_repository.dart';
 import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:compostavel_app/repositories/compound_repository.dart';
 import 'package:compostavel_app/repositories/donation_repository.dart';
+import 'package:compostavel_app/repositories/tutorial_repository.dart';
 import 'package:compostavel_app/repositories/user_data_repository.dart';
 import 'package:compostavel_app/repositories/visit_repository.dart';
 import 'package:compostavel_app/repositories/visitation_repository.dart';
@@ -47,6 +49,13 @@ void main() async {
       ChangeNotifierProvider(
         create: (context) =>
             VisitReposiitory(auth: context.read<AuthService>()),
+      ),
+      ChangeNotifierProvider(
+        create: (context) =>
+            TutorialRepository(auth: context.read<AuthService>()),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => BadgeRepository(auth: context.read<AuthService>()),
       ),
     ],
     child: Compostavel(),

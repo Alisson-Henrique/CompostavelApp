@@ -133,6 +133,18 @@ class ComposterRepository extends ChangeNotifier {
       'logradouro': address.street,
       'numero': address.number,
     });
+
+    DocumentSnapshot snapshot = await db
+        .collection("Usuarios/${auth.user!.email}/Dados")
+        .doc("Conta")
+        .get();
+
+    Map<String, dynamic> data = snapshot.data();
+
+    await db
+        .collection("Usuarios/${auth.user!.email}/Dados")
+        .doc("Conta")
+        .update({'quantidade_composteira': data['quantidade_composteira'] + 1});
     _composters.clear();
     change = true;
     notifyListeners();

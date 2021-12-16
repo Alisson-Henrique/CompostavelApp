@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:compostavel_app/databases/db_firestore.dart';
+import 'package:compostavel_app/models/Badge.dart';
 import 'package:compostavel_app/models/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +13,7 @@ class AuthException implements Exception {
 
 class AuthService extends ChangeNotifier {
   FirebaseAuth _auth = FirebaseAuth.instance;
+  late FirebaseFirestore db;
 
   User? user;
 
@@ -46,6 +49,11 @@ class AuthService extends ChangeNotifier {
           {
             'email': email,
             'name': userData.name,
+            'quantidade_doacao': 0,
+            'quantidade_composteira': 0,
+            'quantidade_composto': 0,
+            'quantidade_visita': 0,
+            'quantidade_colaboracoes': 0,
           },
         );
         _getUser();
@@ -85,5 +93,9 @@ class AuthService extends ChangeNotifier {
   logout() async {
     await _auth.signOut();
     _getUser();
+  }
+
+  recoverPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
   }
 }
