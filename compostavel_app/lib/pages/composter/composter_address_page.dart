@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:compostavel_app/models/address.dart';
 import 'package:compostavel_app/models/user_data.dart';
-import 'package:compostavel_app/pages/login_page.dart';
+import 'package:compostavel_app/pages/login/login_page.dart';
 import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:compostavel_app/repositories/user_data_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';

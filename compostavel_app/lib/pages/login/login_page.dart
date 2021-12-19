@@ -1,5 +1,5 @@
 import 'package:compostavel_app/models/user_data.dart';
-import 'package:compostavel_app/pages/register_page.dart';
+import 'package:compostavel_app/pages/login/register_page.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

@@ -289,49 +289,54 @@ class _DonationDetailsPageState extends State<DonationDetailsPage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        if (formKey.currentState!.validate()) {
-                                          donationRepository.cancel(
+                                  Visibility(
+                                    visible:
+                                        data["estado_coleta"] == "CANCELADA"
+                                            ? false
+                                            : true,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 5),
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          donationRepository.cancelDonationMade(
                                               widget.donationId,
                                               data["destinatario"]);
-                                        }
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: (isLoading)
-                                            ? [
-                                                Padding(
-                                                  padding: EdgeInsets.all(16),
-                                                  child: SizedBox(
-                                                    height: 24,
-                                                    width: 24,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: Colors.white,
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: (isLoading)
+                                              ? [
+                                                  Padding(
+                                                    padding: EdgeInsets.all(16),
+                                                    child: SizedBox(
+                                                      height: 24,
+                                                      width: 24,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  )
+                                                ]
+                                              : [
+                                                  Icon(
+                                                    Icons.check,
+                                                    color: Colors.red,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.all(16.0),
+                                                    child: Text(
+                                                      "Cancelar",
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: Colors.red),
                                                     ),
                                                   ),
-                                                )
-                                              ]
-                                            : [
-                                                Icon(
-                                                  Icons.check,
-                                                  color: Colors.red,
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.all(16.0),
-                                                  child: Text(
-                                                    "Cancelar",
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
-                                              ],
+                                                ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -348,7 +353,7 @@ class _DonationDetailsPageState extends State<DonationDetailsPage> {
           visible: colected,
           child: FloatingActionButton(
               onPressed: () => {
-                    colected = false,
+                    colected = true,
                     donationRepository.collected(widget.donationId, senderEmail)
                   },
               child: Icon(Icons.done)),

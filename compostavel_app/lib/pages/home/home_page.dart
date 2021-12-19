@@ -1,12 +1,12 @@
 import 'package:compostavel_app/models/user_data.dart';
-import 'package:compostavel_app/pages/home_donor_page.dart';
-import 'package:compostavel_app/pages/my_data_page.dart';
+import 'package:compostavel_app/pages/home/home_donor_page.dart';
+import 'package:compostavel_app/pages/login/my_data_page.dart';
 import 'package:compostavel_app/repositories/user_data_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'composter/composter_list_page.dart';
+import '../composter/composter_list_page.dart';
 import 'home_producer_page.dart';
 
 class HomePage extends StatefulWidget {

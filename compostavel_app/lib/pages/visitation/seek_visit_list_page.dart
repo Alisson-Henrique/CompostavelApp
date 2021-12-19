@@ -13,6 +13,7 @@ class SeekVisitLiistPage extends StatefulWidget {
 
 class _SeekVisitLiistPageState extends State<SeekVisitLiistPage> {
   bool check = false;
+  IconData icon = Icons.person_add_alt_1_outlined;
   @override
   Widget build(BuildContext context) {
     VisitReposiitory visitRepositoy = Provider.of<VisitReposiitory>(context);
@@ -36,7 +37,7 @@ class _SeekVisitLiistPageState extends State<SeekVisitLiistPage> {
           }
 
           if (snapshot.data?.docs.length == 0) {
-            return Center(child: Text('Nenhuma Composteira encontrada'));
+            return Center(child: Text('Esse produtor não possui composteiras'));
           }
 
           return ListView(
@@ -60,13 +61,10 @@ class _SeekVisitLiistPageState extends State<SeekVisitLiistPage> {
                     child: Row(
                       children: <Widget>[
                         IconButton(
-                          icon: Icon(check == false
-                              ? Icons.person_add_alt_1_outlined
-                              : Icons.check),
+                          icon: Icon(Icons.person_add_alt_1_outlined),
                           onPressed: () {
-                            setState(() {
-                              check = true;
-                            });
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("Solicitação enviada!")));
 
                             visitRepositoy.requestParticipation(
                                 data['nome'].toString(), widget.userEmail);

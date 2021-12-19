@@ -28,6 +28,18 @@ class CompoundRepositoy extends ChangeNotifier {
       'data_coleta': compound.collenctionDate,
       'peso': compound.weight,
     });
+
+    DocumentSnapshot snapshot = await db
+        .collection("Usuarios/${auth.user!.email}/Dados")
+        .doc("Conta")
+        .get();
+
+    Map<String, dynamic> data = snapshot.data();
+
+    await db
+        .collection("Usuarios/${auth.user!.email}/Dados")
+        .doc("Conta")
+        .update({'quantidade_composto': data['quantidade_composto'] + 1});
   }
 
   remove(String compoundName) async {

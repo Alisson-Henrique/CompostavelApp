@@ -1,5 +1,6 @@
 import 'package:compostavel_app/models/tutorial.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TutorialDetailsPage extends StatefulWidget {
   Tutorial tutorial;
@@ -10,6 +11,14 @@ class TutorialDetailsPage extends StatefulWidget {
 }
 
 class _TutorialDetailsPageState extends State<TutorialDetailsPage> {
+  Future<void> _launchLink(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url, forceWebView: false, forceSafariVC: false);
+    } else {
+      print('Não pode executar o link $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,8 +63,21 @@ class _TutorialDetailsPageState extends State<TutorialDetailsPage> {
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
-                  )
+                  ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextButton.icon(
+                icon: Icon(Icons.link),
+                label: Text(
+                  widget.tutorial.title,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                onPressed: () => _launchLink(widget.tutorial.link),
               ),
             ),
           ],

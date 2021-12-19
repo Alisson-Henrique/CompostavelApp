@@ -6,6 +6,12 @@ import 'package:compostavel_app/services/auth_service.dart';
 import 'package:compostavel_app/services/util_service.dart';
 import 'package:flutter/material.dart';
 
+class DonationException implements Exception {
+  String message;
+
+  DonationException(this.message);
+}
+
 class DonationRepository extends ChangeNotifier {
   late FirebaseFirestore db;
   late AuthService auth;
@@ -23,7 +29,14 @@ class DonationRepository extends ChangeNotifier {
 
   save(Donation donation, Address? address) async {
     if (donation.recipientEmail == auth.user!.email) {
-      throw Exception();
+      throw DonationException("Deve ser um email de outro usuario!");
+    }
+
+    DocumentSnapshot composterStream =
+        await db.collection('Usuarios').doc(donation.recipientEmail).get();
+
+    if (!composterStream.exists) {
+      throw DonationException("Usuario não Existe!");
     }
 
     if (donation.id == "") {
@@ -114,6 +127,18 @@ class DonationRepository extends ChangeNotifier {
         .delete();
   }
 
+  cancelDonationMade(String donationId, String recipientEmail) async {
+    await db
+        .collection("Usuarios/${auth.user!.email}/Doacao/Feitas/Doacoes")
+        .doc(donationId)
+        .update({'estado_coleta': "CANCELADA"});
+
+    await db
+        .collection("Usuarios/$recipientEmail/Doacao/Recebidas/Doacoes")
+        .doc(donationId)
+        .delete();
+  }
+
   accept(String donationId, String senderEmail) async {
     await db
         .collection("Usuarios/$senderEmail/Doacao/Feitas/Doacoes")
@@ -144,6 +169,16 @@ class DonationRepository extends ChangeNotifier {
         .update({'estado_coleta': "REALIZADA"})
         .then((value) => null)
         .catchError((value) => null);
+
+    DocumentSnapshot snapshot =
+        await db.collection("Usuarios/$senderEmail/Dados").doc("Conta").get();
+
+    Map<String, dynamic> data = snapshot.data();
+
+    await db
+        .collection("Usuarios/$senderEmail/Dados")
+        .doc("Conta")
+        .update({'quantidade_doacao': data['quantidade_doacao'] + 1});
   }
 
   Stream<DocumentSnapshot> getAddressDocumentSnapshotByUser(

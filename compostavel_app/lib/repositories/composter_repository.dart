@@ -6,25 +6,7 @@ import 'package:compostavel_app/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 
 class ComposterRepository extends ChangeNotifier {
-  List<Composter> _composters = [
-    /*
-    Composter(
-        name: "Composteira IFPB - 01",
-        startDate: "20/09/2020",
-        andress: new Andress(),
-        composterState: Composter_State.ATIVA),
-    Composter(
-        name: "Composteira IFPB - 02",
-        startDate: "05/02/2021",
-        andress: new Andress(),
-        composterState: Composter_State.DESATIVADA),
-    Composter(
-        name: "Composteira IFPB - 03",
-        startDate: "07/05/2021",
-        andress: new Andress(),
-        composterState: Composter_State.DESATIVADA)
-        */
-  ];
+  List<Composter> _composters = [];
 
   late FirebaseFirestore db;
   late AuthService auth;

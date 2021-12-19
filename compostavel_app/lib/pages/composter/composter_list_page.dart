@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:compostavel_app/models/address.dart';
 import 'package:compostavel_app/models/composter.dart';
-import 'package:compostavel_app/pages/composter_details_page.dart';
-import 'package:compostavel_app/pages/composter_registration_page.dart';
+import 'package:compostavel_app/pages/composter/composter_details_page.dart';
+import 'package:compostavel_app/pages/composter/composter_registration_page.dart';
 import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:compostavel_app/services/auth_service.dart';
@@ -73,7 +73,31 @@ class _ComposterListPageState extends State<ComposterListPage> {
                   trailing: IconButton(
                     icon: Icon(Icons.delete, color: Colors.red),
                     onPressed: () {
-                      composterRepository.remove(data['nome']);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(
+                              "Deletar Composteira?",
+                            ),
+                            actions: [
+                              MaterialButton(
+                                  child: Text("Sim",
+                                      style: TextStyle(color: Colors.blue)),
+                                  onPressed: () => {
+                                        composterRepository
+                                            .remove(data['nome']),
+                                        Navigator.pop(context)
+                                      }),
+                              MaterialButton(
+                                child: Text("Não",
+                                    style: TextStyle(color: Colors.red)),
+                                onPressed: () => {Navigator.pop(context)},
+                              )
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                   subtitle: Text(data["estado_composteira"]),

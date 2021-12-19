@@ -118,36 +118,36 @@ class _DonationListMadePageState extends State<DonationListMadePage> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    trailing: Container(
-                      width: 100,
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.edit, color: Colors.orange),
-                            onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return DonationFormPage(
-                                    donation: Donation(
-                                  id: data['id'],
-                                  recipientEmail: data['destinatario'],
-                                  senderEmail: data['remetente'],
-                                  weight: int.parse(data['peso'].toString()),
-                                  collenctionDate: data['data_coleta'],
-                                  hours: data['horas'],
-                                  note: data['observações'],
-                                  status: data['estado_coleta'],
-                                  addressId: data['endereco'],
-                                ));
-                              }),
+                    trailing: Visibility(
+                      visible: data['estado_coleta'] == "REALIZADA" ||
+                              data['estado_coleta'] == "CANCELADA"
+                          ? false
+                          : true,
+                      child: Container(
+                        width: 50,
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.edit, color: Colors.orange),
+                              onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return DonationFormPage(
+                                      donation: Donation(
+                                    id: data['id'],
+                                    recipientEmail: data['destinatario'],
+                                    senderEmail: data['remetente'],
+                                    weight: int.parse(data['peso'].toString()),
+                                    collenctionDate: data['data_coleta'],
+                                    hours: data['horas'],
+                                    note: data['observações'],
+                                    status: data['estado_coleta'],
+                                    addressId: data['endereco'],
+                                  ));
+                                }),
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              donationRepository.remove(data['id']);
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     subtitle: Text(
@@ -160,9 +160,10 @@ class _DonationListMadePageState extends State<DonationListMadePage> {
                     onTap: () => Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
                       return DonationDetailsPage(
-                          donationId: data["id"],
-                          status: data["estado_coleta"],
-                          path: widget.path);
+                        donationId: data["id"],
+                        status: data["estado_coleta"],
+                        path: widget.path,
+                      );
                     })),
                   );
                 }

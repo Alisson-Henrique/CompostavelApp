@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:compostavel_app/models/composter.dart';
 import 'package:compostavel_app/models/visitation.dart';
-import 'package:compostavel_app/pages/register_visitation_page.dart';
-import 'package:compostavel_app/pages/visitation_details_page.dart';
+import 'package:compostavel_app/pages/visitation/register_visitation_page.dart';
+import 'package:compostavel_app/pages/visitation/visitation_details_page.dart';
 import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:compostavel_app/repositories/visitation_repository.dart';
 import 'package:flutter/material.dart';
@@ -93,17 +93,42 @@ class _VisitationListState extends State<VisitationList> {
                         child: IconButton(
                           icon: Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
-                            visitationRepository.remove(
-                                widget.composterName,
-                                Visitation(
-                                  id: data["id"],
-                                  name: data["responsável"],
-                                  temperature: data["temperatura"],
-                                  ph: data["ph"],
-                                  moisture: data["umidade"],
-                                  date: data["data"],
-                                  note: data["observações"],
-                                ));
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    "Deletar Composteira?",
+                                  ),
+                                  actions: [
+                                    MaterialButton(
+                                        child: Text("Sim",
+                                            style:
+                                                TextStyle(color: Colors.blue)),
+                                        onPressed: () => {
+                                              visitationRepository.remove(
+                                                  widget.composterName,
+                                                  Visitation(
+                                                    id: data["id"],
+                                                    name: data["responsável"],
+                                                    temperature:
+                                                        data["temperatura"],
+                                                    ph: data["ph"],
+                                                    moisture: data["umidade"],
+                                                    date: data["data"],
+                                                    note: data["observações"],
+                                                  )),
+                                              Navigator.pop(context)
+                                            }),
+                                    MaterialButton(
+                                      child: Text("Não",
+                                          style: TextStyle(color: Colors.red)),
+                                      onPressed: () => {Navigator.pop(context)},
+                                    )
+                                  ],
+                                );
+                              },
+                            );
                           },
                         ),
                       )

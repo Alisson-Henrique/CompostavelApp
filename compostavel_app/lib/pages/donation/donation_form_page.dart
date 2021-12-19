@@ -33,13 +33,27 @@ class _DonationFormPageState extends State<DonationFormPage> {
   @override
   Widget build(BuildContext context) {
     donationRepository = context.watch<DonationRepository>();
-    save() {
+    save() async {
       try {
-        Address? address = addressRepository.getAddressesByName(valueChoice);
-        donationRepository.save(donation, address);
-      } on Exception catch (e) {
+        if (valueChoice != null) {
+          Address? address = addressRepository.getAddressesByName(valueChoice);
+          await donationRepository.save(donation, address);
+          setState(() {
+            recipientEmail.text = "";
+            weight.text = "";
+            collenctionDate.text = "";
+            hours.text = "";
+            note.text = "";
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Doação agendada com Sucesso!")));
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Selecione um Endereço")));
+        }
+      } on DonationException catch (e) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Deu algum erro!")));
+            .showSnackBar(SnackBar(content: Text(e.message)));
       }
     }
 
@@ -198,7 +212,6 @@ class _DonationFormPageState extends State<DonationFormPage> {
                           );
                         }
                         save();
-                        Navigator.pop(context);
                       }
                     },
                     child: Row(

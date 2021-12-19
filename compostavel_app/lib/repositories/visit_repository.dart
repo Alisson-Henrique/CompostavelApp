@@ -7,6 +7,12 @@ import 'package:compostavel_app/services/util_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+class VisitException implements Exception {
+  String message;
+
+  VisitException(this.message);
+}
+
 class VisitReposiitory extends ChangeNotifier {
   late FirebaseFirestore db;
   late AuthService auth;
@@ -23,6 +29,10 @@ class VisitReposiitory extends ChangeNotifier {
   }
 
   Stream<QuerySnapshot> getVisitSnapshot(String userEmail) {
+    if (userEmail == auth.user!.email) {
+      throw VisitException("Deve ser um email de outro usuario!");
+    }
+
     return db.collection("Composteiras/$userEmail/Composteiras").snapshots();
   }
 
@@ -71,6 +81,14 @@ class VisitReposiitory extends ChangeNotifier {
       'nome_composteira': composterName,
       'id': id
     });
+
+    DocumentSnapshot snapshot =
+        await db.collection("Usuarios/$userEmail/Dados").doc("Conta").get();
+
+    Map<String, dynamic> data = snapshot.data();
+
+    await db.collection("Usuarios/$userEmail/Dados").doc("Conta").update(
+        {'quantidade_composteira': data['quantidade_colaboracoes'] + 1});
   }
 
   remove(String userEmail, String composterName) async {
@@ -158,6 +176,15 @@ class VisitReposiitory extends ChangeNotifier {
       'estado_composteira': visitation.composterState,
       'id_última_atualização': id,
       'deleted_at': null
+    });
+
+    DocumentSnapshot snapshot =
+        await db.collection("Usuarios/$userEmail/Dados").doc("Conta").get();
+
+    Map<String, dynamic> dataSnapshot = snapshot.data();
+
+    await db.collection("Usuarios/$userEmail/Dados").doc("Conta").update({
+      'quantidade_colaboracoes': dataSnapshot['quantidade_colaboracoes'] + 1
     });
   }
 }

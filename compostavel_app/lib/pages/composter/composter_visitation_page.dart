@@ -1,7 +1,7 @@
 import 'package:compostavel_app/models/composter.dart';
 import 'package:compostavel_app/models/visitation.dart';
-import 'package:compostavel_app/pages/register_visitation_page.dart';
-import 'package:compostavel_app/pages/visitation_details_page.dart';
+import 'package:compostavel_app/pages/visitation/register_visitation_page.dart';
+import 'package:compostavel_app/pages/visitation/visitation_details_page.dart';
 import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:compostavel_app/repositories/visitation_repository.dart';
 import 'package:flutter/material.dart';

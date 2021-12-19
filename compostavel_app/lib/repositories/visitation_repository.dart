@@ -109,6 +109,17 @@ class VisitationRepository extends ChangeNotifier {
       'id_última_atualização': id,
       'deleted_at': null
     });
+    DocumentSnapshot snapshot = await db
+        .collection("Usuarios/${auth.user!.email}/Dados")
+        .doc("Conta")
+        .get();
+
+    Map<String, dynamic> dataSnapshot = snapshot.data();
+
+    await db
+        .collection("Usuarios/${auth.user!.email}/Dados")
+        .doc("Conta")
+        .update({'quantidade_visita': dataSnapshot['quantidade_visita'] + 1});
     _visitations.clear();
     change = true;
     notifyListeners();

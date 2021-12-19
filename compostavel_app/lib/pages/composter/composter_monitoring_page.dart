@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:compostavel_app/models/composter.dart';
 import 'package:compostavel_app/models/composter_state.dart';
-import 'package:compostavel_app/pages/composter_address_page.dart';
+import 'package:compostavel_app/pages/composter/composter_address_page.dart';
 import 'package:compostavel_app/repositories/address_repository.dart';
 import 'package:compostavel_app/repositories/composter_repository.dart';
 import 'package:flutter/material.dart';
