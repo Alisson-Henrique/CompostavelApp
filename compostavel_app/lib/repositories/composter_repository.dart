@@ -96,7 +96,7 @@ class ComposterRepository extends ChangeNotifier {
       'umidade': 0,
       'observações': "N/A",
       'estado_composteira': "PREPARAÇÃO",
-      'id_última_atualização': 1,
+      'id_última_atualização': 0,
       'última_atualização': "N/A",
       'dono': auth.user!.email,
       'deleted_at': null

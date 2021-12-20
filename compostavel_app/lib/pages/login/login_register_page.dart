@@ -160,23 +160,36 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
                       ),
                     ),
                     obscureText: true,
-                    keyboardType: TextInputType.visiblePassword),
+                    keyboardType: TextInputType.visiblePassword,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Senha Invalida!";
+                      }
+                      return null;
+                    }),
               ),
               Visibility(
                 visible: !isLogin,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                   child: TextFormField(
-                    controller: confirmPassword,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Confirmar Senha",
-                      prefixIcon: const Icon(
-                        Icons.lock_outline,
-                        color: Colors.black54,
+                      controller: confirmPassword,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Confirmar Senha",
+                        prefixIcon: const Icon(
+                          Icons.lock_outline,
+                          color: Colors.black54,
+                        ),
                       ),
-                    ),
-                  ),
+                      obscureText: true,
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Senha Invalida!";
+                        }
+                        return null;
+                      }),
                 ),
               ),
               Padding(

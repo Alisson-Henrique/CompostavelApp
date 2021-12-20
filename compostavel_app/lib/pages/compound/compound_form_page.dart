@@ -108,7 +108,13 @@ class _CompoundFormPageState extends State<CompoundFormPage> {
                       border: OutlineInputBorder(),
                       labelText: "Peso",
                     ),
-                    keyboardType: TextInputType.text),
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Peso vazio!";
+                      }
+                      return null;
+                    }),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),

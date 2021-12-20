@@ -44,7 +44,7 @@ class _TutorialDetailsPageState extends State<TutorialDetailsPage> {
             ),
             Padding(
               padding: EdgeInsets.all(10),
-              child: Row(
+              child: Column(
                 children: [
                   Text(
                     widget.tutorial.description,

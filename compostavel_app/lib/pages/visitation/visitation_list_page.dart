@@ -98,7 +98,7 @@ class _VisitationListState extends State<VisitationList> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: Text(
-                                    "Deletar Composteira?",
+                                    "Deletar Visita?",
                                   ),
                                   actions: [
                                     MaterialButton(

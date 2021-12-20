@@ -107,7 +107,7 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                       validator: (value) {
                         String patttern = r'(^[a-zA-Z ]*$)';
                         RegExp regExp = new RegExp(patttern);
-                        if (regExp.hasMatch(value!)) {
+                        if (regExp.hasMatch(value!) && value != "") {
                           return "A temperatura só deve conter dígitos";
                         }
                         return null;
@@ -125,7 +125,7 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                       validator: (value) {
                         String patttern = r'(^[a-zA-Z ]*$)';
                         RegExp regExp = new RegExp(patttern);
-                        if (regExp.hasMatch(value!)) {
+                        if (regExp.hasMatch(value!) && value != "") {
                           return "A ph só deve conter dígitos";
                         }
                         return null;
@@ -143,7 +143,7 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                       validator: (value) {
                         String patttern = r'(^[a-zA-Z ]*$)';
                         RegExp regExp = new RegExp(patttern);
-                        if (regExp.hasMatch(value!)) {
+                        if (regExp.hasMatch(value!) && value != "") {
                           return "A umidade só deve conter dígitos";
                         }
                         return null;
@@ -204,9 +204,13 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                               id: widget.visitation.id,
                               name: widget.name!,
                               date: date.text,
-                              moisture: int.parse(moisture.text),
+                              moisture: moisture.text != ""
+                                  ? int.parse(moisture.text)
+                                  : 0,
                               ph: int.parse(ph.text),
-                              temperature: int.parse(temperature.text),
+                              temperature: temperature.text != ""
+                                  ? int.parse(temperature.text)
+                                  : 0,
                               note: note.text,
                               composterState: valueChoice);
                           saveVisitation();
@@ -215,9 +219,13 @@ class _RegisterVisitationPageState extends State<RegisterVisitationPage> {
                               id: 0,
                               name: widget.name!,
                               date: date.text,
-                              moisture: int.parse(moisture.text),
-                              ph: int.parse(ph.text),
-                              temperature: int.parse(temperature.text),
+                              moisture: moisture.text != ""
+                                  ? int.parse(moisture.text)
+                                  : 0,
+                              ph: ph.text != "" ? int.parse(ph.text) : 0,
+                              temperature: temperature.text != ""
+                                  ? int.parse(temperature.text)
+                                  : 0,
                               note: note.text,
                               composterState: valueChoice);
                           saveVisitation();

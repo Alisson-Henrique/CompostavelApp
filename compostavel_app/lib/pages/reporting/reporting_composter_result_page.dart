@@ -123,7 +123,7 @@ class _ReportingComposterResultPageState
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              data["umidade"].toString(),
+                              data["umidade"].toString() + "%",
                               style: TextStyle(
                                 fontSize: 22,
                                 color: Colors.blue,

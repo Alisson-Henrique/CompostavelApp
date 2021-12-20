@@ -138,10 +138,12 @@ class VisitReposiitory extends ChangeNotifier {
         visitationIdLastUpdate: data["id_última_atualização"],
         composterState: data["estado_composteira"]);
 
-    var id = visitation!.id;
-    if (id == 0) {
-      id = composter.visitationIdLastUpdate!;
-      id = id + 1;
+    var id = composter.visitationIdLastUpdate;
+
+    if (id != 0) {
+      id = id! + 1;
+    } else {
+      id = 1;
     }
 
     final DateTime now = DateTime.now();
@@ -154,7 +156,7 @@ class VisitReposiitory extends ChangeNotifier {
         .doc(id.toString())
         .set({
       'responsável': auth.user!.email,
-      'temperatura': visitation.temperature,
+      'temperatura': visitation!.temperature,
       'ph': visitation.ph,
       'umidade': visitation.moisture,
       'data': formatted,
